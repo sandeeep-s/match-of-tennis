@@ -1,0 +1,5 @@
+rootProject.name = 'match-of-tennis'
+
+include 'application'
+include 'adapters'
+include 'bootstrap'

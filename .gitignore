@@ -1,0 +1,27 @@
+/bin/
+/build/
+/.classpath
+/.project
+/.settings/
+/.gradle/
+/docker/tmp
+/.idea/
+/*.lck
+/*.log
+/src/test/tmp/*.csv
+/*.iml
+git /bin/
+/build/
+**/build/*
+/.classpath
+/.project
+/.settings/
+/.gradle/
+/docker/tmp
+/.idel
+/out/
+**/out/*
+VERSION
+**/src/main/java/de/gefa/common/srd/api/*.*
+
+
