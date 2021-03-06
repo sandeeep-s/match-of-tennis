@@ -22,4 +22,7 @@ public class Game {
     public GameScore playerTwoScore() {
         return playerTwoScore;
     }
+
+    public void playerOneWinsPoint() {
+    }
 }
