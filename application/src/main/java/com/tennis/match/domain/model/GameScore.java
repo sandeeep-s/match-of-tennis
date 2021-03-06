@@ -16,4 +16,8 @@ public class GameScore {
     public void initialize() {
         pointsWon = Points.ZERO;
     }
+
+    public void addPoint() {
+        pointsWon = pointsWon.nextPoint();
+    }
 }

@@ -24,5 +24,6 @@ public class Game {
     }
 
     public void playerOneWinsPoint() {
+        playerOneScore.addPoint();
     }
 }
