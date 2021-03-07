@@ -21,8 +21,8 @@ public class Game {
     public void start() {
     }
 
-    public void serverWinsPoint() {
-        setServerScore(gameScoringRules.calculatePlayerScore(serverScore, receiverScore));
+    public void addPointForServer() {
+        setServerScore(gameScoringRules.calculateServerScore(this));
 //        checkDeuce();
     }
 

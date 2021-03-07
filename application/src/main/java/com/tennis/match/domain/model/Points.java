@@ -2,50 +2,36 @@ package com.tennis.match.domain.model;
 
 public enum Points {
 
-    LOVE("0") {
+    LOVE {
         @Override
-        public Points nextPoint(boolean isDeuce) {
+        public Points nextPoint() {
             return FIFTEEN;
         }
     },
-    FIFTEEN("15") {
+    FIFTEEN {
         @Override
-        public Points nextPoint(boolean isDeuce) {
+        public Points nextPoint() {
             return THIRTY;
         }
 
     },
-    THIRTY("30") {
+    THIRTY {
         @Override
-        public Points nextPoint(boolean isDeuce) {
+        public Points nextPoint() {
             return FORTY;
         }
     },
-    FORTY("40") {
+    FORTY {
         @Override
-        public Points nextPoint(boolean isDeuce) {
-            if (isDeuce){
-                return ADVANTAGE;
-            }else{
-                return GAME;
-            }
+        public Points nextPoint() {
+            return GAME;
         }
     },
-    ADVANTAGE("AD"),
-    GAME("Game");
+    ADVANTAGE,
+    GAME;
 
-    private String pointsScore;
-
-    Points(String pointsScore) {
-        this.pointsScore = pointsScore;
-    }
-
-    public String pointsScore() {
-        return pointsScore;
-    }
-
-    public Points nextPoint(boolean isDeuce) {
-        throw new IllegalStateException("No further increment is possible from " + this.pointsScore);
+    public Points nextPoint() {
+        throw new IllegalStateException("No further increment is possible from " + this);
     }
 
 

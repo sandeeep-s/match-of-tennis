@@ -15,4 +15,8 @@ public class Match {
     public void startNewGame() {
         setInProgress.startNewGame();
     }
+
+    public Game currentGame() {
+        return null;
+    }
 }

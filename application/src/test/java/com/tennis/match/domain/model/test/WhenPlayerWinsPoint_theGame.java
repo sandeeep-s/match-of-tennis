@@ -27,7 +27,7 @@ public class WhenPlayerWinsPoint_theGame {
         openMocks(this);
     }
 
-    private static class TestableGame extends  Game{
+    private static class TestableGame extends Game {
         public TestableGame(GameId gameId, TennisMatchSet set, GameScoringRules gameScoringRules) {
             super(gameId, set);
             setGameScoringRules(gameScoringRules);
@@ -35,7 +35,7 @@ public class WhenPlayerWinsPoint_theGame {
     }
 
     @Test
-    void shouldAskGameRulesForNewScoreOfThePlayer() {
+    void shouldAskGameScoringRulesForNewServerScore_give_thePointWasWonByServer() {
 
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
@@ -43,9 +43,9 @@ public class WhenPlayerWinsPoint_theGame {
         game.start();
         assertThat(game.serverScore().points()).isEqualTo(LOVE);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
-        verify(mockGameScoringRules, times(1)).calculatePlayerScore(currentScoreArgumentCaptor.capture(), otherScoreArgumentCaptor.capture());
+        verify(mockGameScoringRules, times(1)).calculateServerScore(game);
     }
 
     @Test
@@ -57,9 +57,9 @@ public class WhenPlayerWinsPoint_theGame {
         game.start();
         assertThat(game.serverScore().points()).isEqualTo(LOVE);
         GameScore mockGameScore = GameScore.of(THIRTY);
-        when(mockGameScoringRules.calculatePlayerScore(any(GameScore.class), any(GameScore.class))).thenReturn(mockGameScore);
+        when(mockGameScoringRules.calculateServerScore(game)).thenReturn(mockGameScore);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore()).isEqualTo(mockGameScore);
 
@@ -67,93 +67,98 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldChangeScoreToFifteen_given_currentScoreWasZero() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
-
         Game game = Game.from(gameId, set);
         game.start();
         assertThat(game.serverScore().points()).isEqualTo(LOVE);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
     }
 
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.serverWinsPoint();
+        game.addPointForServer();
         assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore().points()).isEqualTo(THIRTY);
     }
 
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
+        game.addPointForServer();
         assertThat(game.serverScore().points()).isEqualTo(THIRTY);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
     }
 
     @Test
     void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
+        game.addPointForServer();
+        game.addPointForServer();
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore().points()).isEqualTo(GAME);
     }
 
     @Test
     void shouldFailWithError_given_gameIsALreadyWon() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
+        game.addPointForServer();
+        game.addPointForServer();
+        game.addPointForServer();
         assertThat(game.serverScore().points()).isEqualTo(GAME);
 
-        Throwable thrown = catchThrowable(() -> game.serverWinsPoint());
+        Throwable thrown = catchThrowable(() -> game.addPointForServer());
 
         assertThat(thrown).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void shouldActivateDeuceRule_given_bothPlayersReachScoreForty() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
 
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
@@ -162,25 +167,24 @@ public class WhenPlayerWinsPoint_theGame {
     }
 
 
-
     @Test
     void shouldTakeAdvantage_given_currentScoreWasForty_and_deuceRuleWasActivated() {
+
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
-        game.serverWinsPoint();
+        game.addPointForServer();
         game.playerTwoWinsPoint();
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
-        game.serverWinsPoint();
+        game.addPointForServer();
 
         assertThat(game.serverScore().points()).isEqualTo("AD");
     }
-
 
 }
