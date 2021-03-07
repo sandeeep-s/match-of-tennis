@@ -1,5 +1,6 @@
 package com.tennis.match.application;
 
+import com.tennis.match.domain.model.Match;
 import com.tennis.match.domain.model.MatchId;
 import com.tennis.match.domain.model.MatchRepository;
 
@@ -12,6 +13,7 @@ public class MatchApplicationService {
     }
 
     public void startNewGameOfMatchWith(MatchId matchId) {
-        matchRepository.matchWith(matchId);
+        Match match = matchRepository.matchWith(matchId);
+        match.startNewGame();
     }
 }
