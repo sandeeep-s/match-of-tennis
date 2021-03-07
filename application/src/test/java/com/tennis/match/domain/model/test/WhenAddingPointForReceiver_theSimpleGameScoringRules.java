@@ -56,7 +56,7 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     }
 
     @Test
-    void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
+    void shouldChangeScoreToGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
         game.addPointToReceiverScore();
         game.addPointToReceiverScore();
@@ -97,27 +97,6 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
         simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
 
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
-    }
-
-
-    @Test
-    void shouldTakeAdvantage_given_currentScoreWasForty_and_deuceRuleWasActivated() {
-
-        GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
-        Game game = Game.from(gameId, set);
-        game.start();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
-
-        game.addPointToReceiverScore();
-
-        assertThat(game.receiverScore().points()).isEqualTo("AD");
     }
 
 }

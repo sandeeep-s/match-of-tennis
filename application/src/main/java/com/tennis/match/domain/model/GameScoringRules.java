@@ -6,4 +6,5 @@ public interface GameScoringRules {
 
     void addPointToReceiverScore(Game game);
 
+    boolean isDeuce(Game game);
 }

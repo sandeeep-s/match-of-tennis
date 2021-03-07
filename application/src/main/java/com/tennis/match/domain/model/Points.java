@@ -24,14 +24,19 @@ public enum Points {
     FORTY {
         @Override
         public Points nextPoint() {
+            return ADVANTAGE;
+        }
+    },
+    ADVANTAGE{
+        @Override
+        public Points nextPoint() {
             return GAME;
         }
     },
-    ADVANTAGE,
     GAME;
 
     public Points nextPoint() {
-        throw new IllegalStateException("No further increment is possible from " + this);
+        throw new IllegalStateException("No point can be added after" + this);
     }
 
 

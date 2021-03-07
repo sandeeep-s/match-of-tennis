@@ -29,10 +29,8 @@ public class Game {
         gameScoringRules.addPointToReceiverScore(this);
     }
 
-    private void checkDeuce() {
-        if (serverScore.points() == Points.FORTY && receiverScore.points() == Points.FORTY){
-            setGameScoringRules(new DeuceGameScoringRules());
-        }
+    public boolean isDeuce() {
+        return gameScoringRules.isDeuce(this);
     }
 
     public GameId gameId() {

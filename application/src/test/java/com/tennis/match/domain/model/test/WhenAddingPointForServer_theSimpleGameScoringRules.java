@@ -100,25 +100,4 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 
-
-    @Test
-    void shouldTakeAdvantage_given_currentScoreWasForty_and_deuceRuleWasActivated() {
-
-        GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
-        Game game = Game.from(gameId, set);
-        game.start();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
-
-        game.addPointToServerScore();
-
-        assertThat(game.serverScore().points()).isEqualTo("AD");
-    }
-
 }
