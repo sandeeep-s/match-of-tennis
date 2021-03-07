@@ -16,8 +16,8 @@ public class WhenGameStarts_theGame {
 
         game.start();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("0");
-        assertThat(game.playerTwoScore().value()).isEqualTo("0");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("0");
+        assertThat(game.playerTwoScore().pointsWon()).isEqualTo("0");
     }
 
     @Test

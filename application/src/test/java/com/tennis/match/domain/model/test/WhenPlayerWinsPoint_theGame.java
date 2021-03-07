@@ -3,6 +3,7 @@ package com.tennis.match.domain.model.test;
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.Test;
 
+import static com.tennis.match.domain.model.Points.FORTY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
@@ -15,11 +16,11 @@ public class WhenPlayerWinsPoint_theGame {
 
         Game game = Game.from(gameId, set);
         game.start();
-        assertThat(game.playerOneScore().value()).isEqualTo("0");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("0");
 
         game.playerOneWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("15");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("15");
     }
 
     @Test
@@ -29,11 +30,11 @@ public class WhenPlayerWinsPoint_theGame {
         Game game = Game.from(gameId, set);
         game.start();
         game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().value()).isEqualTo("15");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("15");
 
         game.playerOneWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("30");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("30");
     }
 
     @Test
@@ -44,11 +45,11 @@ public class WhenPlayerWinsPoint_theGame {
         game.start();
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().value()).isEqualTo("30");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("30");
 
         game.playerOneWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("40");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
     }
 
     @Test
@@ -60,11 +61,28 @@ public class WhenPlayerWinsPoint_theGame {
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().value()).isEqualTo("40");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
 
         game.playerOneWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("Game");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("Game");
+    }
+
+    @Test
+    void shouldFailWithError_given_gameIsALreadyWon() {
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
+        game.start();
+        game.playerOneWinsPoint();
+        game.playerOneWinsPoint();
+        game.playerOneWinsPoint();
+        game.playerOneWinsPoint();
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("Game");
+
+        Throwable thrown = catchThrowable(() -> game.playerOneWinsPoint());
+
+        assertThat(thrown).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -82,8 +100,8 @@ public class WhenPlayerWinsPoint_theGame {
         game.playerOneWinsPoint();
         game.playerTwoWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("40");
-        assertThat(game.playerTwoScore().value()).isEqualTo("40");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo(FORTY);
+        assertThat(game.playerTwoScore().pointsWon()).isEqualTo(FORTY);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameRules.class);
     }
 
@@ -101,28 +119,12 @@ public class WhenPlayerWinsPoint_theGame {
         game.playerTwoWinsPoint();
         game.playerOneWinsPoint();
         game.playerTwoWinsPoint();
-        assertThat(game.playerOneScore().value()).isEqualTo("40");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
 
         game.playerOneWinsPoint();
 
-        assertThat(game.playerOneScore().value()).isEqualTo("AD");
+        assertThat(game.playerOneScore().pointsWon()).isEqualTo("AD");
     }
 
-    @Test
-    void shouldFailWithError_given_gameIsALreadyWon() {
-        GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
-        Game game = Game.from(gameId, set);
-        game.start();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().value()).isEqualTo("Game");
-
-        Throwable thrown = catchThrowable(() -> game.playerOneWinsPoint());
-
-        assertThat(thrown).isInstanceOf(IllegalStateException.class);
-    }
 
 }

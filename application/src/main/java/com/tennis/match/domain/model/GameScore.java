@@ -4,11 +4,8 @@ public class GameScore {
 
     private Points pointsWon;
 
-    public GameScore() {
-    }
-
-    public String value() {
-        return pointsWon.pointsScore();
+    public Points pointsWon() {
+        return pointsWon;
     }
 
     public void initialize() {

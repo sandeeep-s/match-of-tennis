@@ -23,11 +23,20 @@ public class Game {
 
     public void playerOneWinsPoint() {
         playerOneScore.addPoint();
+        checkDeuce();
     }
 
     public void playerTwoWinsPoint() {
         playerTwoScore.addPoint();
+        checkDeuce();
     }
+
+    private void checkDeuce() {
+        if (playerOneScore.pointsWon() == Points.FORTY && playerTwoScore.pointsWon() == Points.FORTY){
+            setGameRules(new DeuceGameRules());
+        }
+    }
+
 
     public GameId gameId() {
         return getGameId();
