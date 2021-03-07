@@ -23,7 +23,8 @@ allprojects {
                 junit  : '5.7.1',
                 assertj: '3.19.0',
                 mockito: '3.8.0',
-                slf4j  : '1.7.30'
+                slf4j  : '1.7.30',
+                lombok : '1.18.18',
         ]
     }
 
@@ -44,11 +45,14 @@ subprojects {
     }
 
     dependencies {
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: libraryVersions.lombok
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: libraryVersions.lombok
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: libraryVersions.slf4j
+
         testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: libraryVersions.junit
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: libraryVersions.junit
         testImplementation group: 'org.assertj', name: 'assertj-core', version: libraryVersions.assertj
         testImplementation group: 'org.mockito', name: 'mockito-inline', version: libraryVersions.mockito
-        implementation group: 'org.slf4j', name: 'slf4j-api', version: libraryVersions.slf4j
     }
 
 }
