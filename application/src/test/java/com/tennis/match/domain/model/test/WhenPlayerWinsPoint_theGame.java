@@ -1,13 +1,69 @@
 package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 
-import static com.tennis.match.domain.model.Points.FORTY;
+import static com.tennis.match.domain.model.Points.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenPlayerWinsPoint_theGame {
+
+    @Mock
+    private GameScoringRules mockGameScoringRules;
+    @Captor
+    private ArgumentCaptor<GameScore> currentScoreArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<GameScore> otherScoreArgumentCaptor;
+
+    @BeforeEach
+    void setUp() {
+        openMocks(this);
+    }
+
+    private static class TestableGame extends  Game{
+        public TestableGame(GameId gameId, TennisMatchSet set, GameScoringRules gameScoringRules) {
+            super(gameId, set);
+            setGameScoringRules(gameScoringRules);
+        }
+    }
+
+    @Test
+    void shouldAskGameRulesForNewScoreOfThePlayer() {
+
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = new TestableGame(gameId, set, mockGameScoringRules);
+        game.start();
+        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+
+        game.serverWinsPoint();
+
+        verify(mockGameScoringRules, times(1)).calculatePlayerScore(currentScoreArgumentCaptor.capture(), otherScoreArgumentCaptor.capture());
+    }
+
+    @Test
+    void shouldUpdatePlayersScoreToCalculatedScore() {
+
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = new TestableGame(gameId, set, mockGameScoringRules);
+        game.start();
+        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+        GameScore mockGameScore = GameScore.of(THIRTY);
+        when(mockGameScoringRules.calculatePlayerScore(any(GameScore.class), any(GameScore.class))).thenReturn(mockGameScore);
+
+        game.serverWinsPoint();
+
+        assertThat(game.serverScore()).isEqualTo(mockGameScore);
+
+    }
 
     @Test
     void shouldChangeScoreToFifteen_given_currentScoreWasZero() {
@@ -16,11 +72,11 @@ public class WhenPlayerWinsPoint_theGame {
 
         Game game = Game.from(gameId, set);
         game.start();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("0");
+        assertThat(game.serverScore().points()).isEqualTo(LOVE);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("15");
+        assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
     }
 
     @Test
@@ -29,12 +85,12 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("15");
+        game.serverWinsPoint();
+        assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("30");
+        assertThat(game.serverScore().points()).isEqualTo(THIRTY);
     }
 
     @Test
@@ -43,13 +99,13 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("30");
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        assertThat(game.serverScore().points()).isEqualTo(THIRTY);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
     }
 
     @Test
@@ -58,14 +114,14 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("Game");
+        assertThat(game.serverScore().points()).isEqualTo(GAME);
     }
 
     @Test
@@ -74,13 +130,13 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        game.playerOneWinsPoint();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("Game");
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        game.serverWinsPoint();
+        assertThat(game.serverScore().points()).isEqualTo(GAME);
 
-        Throwable thrown = catchThrowable(() -> game.playerOneWinsPoint());
+        Throwable thrown = catchThrowable(() -> game.serverWinsPoint());
 
         assertThat(thrown).isInstanceOf(IllegalStateException.class);
     }
@@ -91,18 +147,18 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        assertThat(game.gameRules()).isInstanceOf(SimpleGameRules.class);
+        assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo(FORTY);
-        assertThat(game.playerTwoScore().pointsWon()).isEqualTo(FORTY);
-        assertThat(game.gameRules()).isInstanceOf(DeuceGameRules.class);
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+        assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 
 
@@ -113,17 +169,17 @@ public class WhenPlayerWinsPoint_theGame {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
         game.playerTwoWinsPoint();
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("40");
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
-        game.playerOneWinsPoint();
+        game.serverWinsPoint();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("AD");
+        assertThat(game.serverScore().points()).isEqualTo("AD");
     }
 
 

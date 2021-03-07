@@ -3,6 +3,7 @@ package com.tennis.match.domain.model.test;
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.Test;
 
+import static com.tennis.match.domain.model.Points.LOVE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class WhenGameStarts_theGame {
@@ -16,8 +17,8 @@ public class WhenGameStarts_theGame {
 
         game.start();
 
-        assertThat(game.playerOneScore().pointsWon()).isEqualTo("0");
-        assertThat(game.playerTwoScore().pointsWon()).isEqualTo("0");
+        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+        assertThat(game.receiverScore().points()).isEqualTo(LOVE);
     }
 
     @Test
@@ -29,7 +30,7 @@ public class WhenGameStarts_theGame {
 
         game.start();
 
-        assertThat(game.gameRules()).isInstanceOf(SimpleGameRules.class);
+        assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
     }
 
 

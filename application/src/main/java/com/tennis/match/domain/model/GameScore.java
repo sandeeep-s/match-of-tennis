@@ -1,18 +1,31 @@
 package com.tennis.match.domain.model;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter(AccessLevel.PRIVATE)
+@EqualsAndHashCode
+@ToString
 public class GameScore {
 
-    private Points pointsWon;
+    private Points points;
 
-    public Points pointsWon() {
-        return pointsWon;
+    private GameScore(Points points) {
+        setPoints(points);
     }
 
-    public void initialize() {
-        pointsWon = Points.LOVE;
+    public static GameScore of(Points points) {
+        return new GameScore(points);
     }
 
-    public void addPoint() {
-        pointsWon = pointsWon.nextPoint(false);
+    private void setPoints(Points points) {
+        this.points = points;
     }
+
+    public Points points() {
+        return getPoints();
+    }
+
 }

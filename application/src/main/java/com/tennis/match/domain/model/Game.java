@@ -3,40 +3,39 @@ package com.tennis.match.domain.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import static com.tennis.match.domain.model.Points.LOVE;
+
 @Getter(AccessLevel.PRIVATE)
 public class Game {
 
     private GameId gameId;
     private TennisMatchSet partOfSet;
-    private GameScore playerOneScore;
-    private GameScore playerTwoScore;
-    private GameRules gameRules;
+    private GameScore serverScore;
+    private GameScore receiverScore;
+    private GameScoringRules gameScoringRules;
 
     public static Game from(GameId gameId, TennisMatchSet set) {
         return new Game(gameId, set);
     }
 
     public void start() {
-        playerOneScore.initialize();
-        playerTwoScore.initialize();
     }
 
-    public void playerOneWinsPoint() {
-        playerOneScore.addPoint();
-        checkDeuce();
+    public void serverWinsPoint() {
+        setServerScore(gameScoringRules.calculatePlayerScore(serverScore, receiverScore));
+//        checkDeuce();
     }
 
     public void playerTwoWinsPoint() {
-        playerTwoScore.addPoint();
-        checkDeuce();
+        setReceiverScore(gameScoringRules.calculatePlayerScore(receiverScore, serverScore));
+//        checkDeuce();
     }
 
     private void checkDeuce() {
-        if (playerOneScore.pointsWon() == Points.FORTY && playerTwoScore.pointsWon() == Points.FORTY){
-            setGameRules(new DeuceGameRules());
+        if (serverScore.points() == Points.FORTY && receiverScore.points() == Points.FORTY){
+            setGameScoringRules(new DeuceGameScoringRules());
         }
     }
-
 
     public GameId gameId() {
         return getGameId();
@@ -46,24 +45,24 @@ public class Game {
         return getPartOfSet();
     }
 
-    public GameScore playerOneScore() {
-        return getPlayerOneScore();
+    public GameScore serverScore() {
+        return getServerScore();
     }
 
-    public GameScore playerTwoScore() {
-        return getPlayerTwoScore();
+    public GameScore receiverScore() {
+        return getReceiverScore();
     }
 
-    public GameRules gameRules() {
-        return getGameRules();
+    public GameScoringRules gameRules() {
+        return getGameScoringRules();
     }
 
-    private Game(GameId gameId, TennisMatchSet set) {
+    protected Game(GameId gameId, TennisMatchSet set) {
         setGameId(gameId);
         setPartOfSet(set);
-        setPlayerOneScore(new GameScore());
-        setPlayerTwoScore(new GameScore());
-        setGameRules(new SimpleGameRules());
+        setServerScore(GameScore.of(LOVE));
+        setReceiverScore(GameScore.of(LOVE));
+        setGameScoringRules(new SimpleGameScoringRules());
     }
     private void setGameId(GameId gameId) {
         this.gameId = gameId;
@@ -73,15 +72,15 @@ public class Game {
         this.partOfSet = set;
     }
 
-    private void setPlayerOneScore(GameScore playerOneScore) {
-        this.playerOneScore = playerOneScore;
+    private void setServerScore(GameScore serverScore) {
+        this.serverScore = serverScore;
     }
 
-    private void setPlayerTwoScore(GameScore playerTwoScore) {
-        this.playerTwoScore = playerTwoScore;
+    private void setReceiverScore(GameScore receiverScore) {
+        this.receiverScore = receiverScore;
     }
 
-    public void setGameRules(GameRules gameRules) {
-        this.gameRules = gameRules;
+    protected void setGameScoringRules(GameScoringRules gameScoringRules) {
+        this.gameScoringRules = gameScoringRules;
     }
 }
