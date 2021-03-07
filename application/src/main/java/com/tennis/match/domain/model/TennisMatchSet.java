@@ -15,7 +15,7 @@ public class TennisMatchSet {
 
     private SetId setId;
     private List<Game> games;
-    private Game gameInProgress;
+    private Game currentGame;
 
     public static TennisMatchSet from(SetId setId) {
         return new TennisMatchSet(setId);
@@ -24,7 +24,7 @@ public class TennisMatchSet {
     public void startNewGame() {
         Game game = Game.from(newGameId(), this);
         game.start();
-        setGameInProgress(game);
+        setCurrentGame(game);
     }
 
     public SetId setId() {
@@ -35,8 +35,8 @@ public class TennisMatchSet {
         return getGames();
     }
 
-    public Game gameInProgress() {
-        return getGameInProgress();
+    public Game currentGame() {
+        return getCurrentGame();
     }
 
     private GameId newGameId() {
@@ -56,8 +56,8 @@ public class TennisMatchSet {
         this.games = games;
     }
 
-    private void setGameInProgress(Game gameInProgress) {
-        this.gameInProgress = gameInProgress;
+    private void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
     }
 
 }

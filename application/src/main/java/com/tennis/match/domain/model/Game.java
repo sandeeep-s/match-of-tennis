@@ -22,13 +22,11 @@ public class Game {
     }
 
     public void addPointForServer() {
-        setServerScore(gameScoringRules.calculateServerScore(this));
-//        checkDeuce();
+        gameScoringRules.addPointToServerScore(this);
     }
 
-    public void playerTwoWinsPoint() {
-        setReceiverScore(gameScoringRules.calculatePlayerScore(receiverScore, serverScore));
-//        checkDeuce();
+    public void addPointForReceiver() {
+        gameScoringRules.addPointToReceiverScore(this);
     }
 
     private void checkDeuce() {
@@ -72,11 +70,11 @@ public class Game {
         this.partOfSet = set;
     }
 
-    private void setServerScore(GameScore serverScore) {
+    void setServerScore(GameScore serverScore) {
         this.serverScore = serverScore;
     }
 
-    private void setReceiverScore(GameScore receiverScore) {
+    void setReceiverScore(GameScore receiverScore) {
         this.receiverScore = receiverScore;
     }
 

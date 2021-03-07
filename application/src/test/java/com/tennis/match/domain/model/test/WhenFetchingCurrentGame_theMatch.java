@@ -10,7 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class WhenStartingNewGame_theMatch{
+public class WhenFetchingCurrentGame_theMatch {
 
     private Match matchUnderTest;
     @Mock
@@ -23,11 +23,11 @@ public class WhenStartingNewGame_theMatch{
     }
 
     @Test
-    void shouldAskSetInProgressToStartNewGame(){
+    void shouldAskSetInProgressForCurrentGame(){
 
-        matchUnderTest.startNewGame();
+        matchUnderTest.currentGame();
 
-        verify(mockSet, times(1)).startNewGame();
+        verify(mockSet, times(1)).currentGame();
 
     }
 }

@@ -10,13 +10,13 @@ public class Match {
     private Player playerOne;
     private Player playerTwo;
     private List<TennisMatchSet> sets;
-    private TennisMatchSet setInProgress;
+    private TennisMatchSet currentSet;
 
     public void startNewGame() {
-        setInProgress.startNewGame();
+        currentSet.startNewGame();
     }
 
     public Game currentGame() {
-        return null;
+        return currentSet.currentGame();
     }
 }

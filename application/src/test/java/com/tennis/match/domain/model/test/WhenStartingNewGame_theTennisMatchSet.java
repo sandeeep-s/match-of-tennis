@@ -24,7 +24,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        setUnderTest = TennisMatchSet.builder().gameInProgress(mockGame).build();
+        setUnderTest = TennisMatchSet.builder().currentGame(mockGame).build();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
 
             setUnderTest.startNewGame();
 
-            assertThat(setUnderTest.gameInProgress().gameId()).isEqualTo(createdMockGame.gameId());
+            assertThat(setUnderTest.currentGame().gameId()).isEqualTo(createdMockGame.gameId());
         }
     }
 

@@ -3,14 +3,13 @@ package com.tennis.match.domain.model;
 public class SimpleGameScoringRules implements GameScoringRules {
 
     @Override
-    public GameScore calculatePlayerScore(GameScore currentScore, GameScore otherPlayerScore) {
-        return null;
+    public void addPointToServerScore(Game game) {
+        game.setServerScore(GameScore.of(game.serverScore().points().nextPoint()));
     }
 
     @Override
-    public GameScore calculateServerScore(Game game) {
-        GameScore currentScoreOfServer = game.serverScore();
-        return GameScore.of(currentScoreOfServer.points().nextPoint());
+    public void addPointToReceiverScore(Game game) {
+        game.setReceiverScore(GameScore.of(game.receiverScore().points().nextPoint()));
     }
 
     private void checkDeuce(Game game) {
