@@ -1,9 +1,6 @@
 package com.tennis.match.domain.model.test;
 
-import com.tennis.match.domain.model.Game;
-import com.tennis.match.domain.model.GameId;
-import com.tennis.match.domain.model.Player;
-import com.tennis.match.domain.model.TennisMatchSet;
+import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -15,7 +12,6 @@ public class WhenGameStarts_theGame {
 
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.builder().build();
-
         Game game = Game.from(gameId, set);
 
         game.start();
@@ -23,5 +19,18 @@ public class WhenGameStarts_theGame {
         assertThat(game.playerOneScore().value()).isEqualTo("0");
         assertThat(game.playerTwoScore().value()).isEqualTo("0");
     }
+
+    @Test
+    void shouldActivateSimpleGameRules() {
+
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
+
+        game.start();
+
+        assertThat(game.gameRules()).isInstanceOf(SimpleGameRules.class);
+    }
+
 
 }

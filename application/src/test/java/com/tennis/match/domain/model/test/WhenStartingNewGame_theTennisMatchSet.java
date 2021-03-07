@@ -29,7 +29,9 @@ public class WhenStartingNewGame_theTennisMatchSet {
 
     @Test
     void shouldCreateNewGame(){
+
         try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
+            gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(mockGame);
 
             setUnderTest.startNewGame();
 
@@ -39,6 +41,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
 
     @Test
     void shouldStartNewlyCreatedGame(){
+
         try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
             gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(mockGame);
 

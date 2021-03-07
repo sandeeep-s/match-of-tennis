@@ -12,10 +12,10 @@ public class GameScore {
     }
 
     public void initialize() {
-        pointsWon = Points.ZERO;
+        pointsWon = Points.LOVE;
     }
 
     public void addPoint() {
-        pointsWon = pointsWon.nextPoint();
+        pointsWon = pointsWon.nextPoint(false);
     }
 }
