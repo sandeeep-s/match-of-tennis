@@ -59,7 +59,7 @@ public class WhenAddingPointForServerInCurrentGame_theMatchApplicationService {
 
         matchApplicationServiceUnderTest.changeScoreOfCurrentGame(matchId);
 
-        verify(mockGame, times(1)).addPointForServer();
+        verify(mockGame, times(1)).addPointToServerScore();
     }
 
 }

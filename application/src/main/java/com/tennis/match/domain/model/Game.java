@@ -21,11 +21,11 @@ public class Game {
     public void start() {
     }
 
-    public void addPointForServer() {
+    public void addPointToServerScore() {
         gameScoringRules.addPointToServerScore(this);
     }
 
-    public void addPointForReceiver() {
+    public void addPointToReceiverScore() {
         gameScoringRules.addPointToReceiverScore(this);
     }
 

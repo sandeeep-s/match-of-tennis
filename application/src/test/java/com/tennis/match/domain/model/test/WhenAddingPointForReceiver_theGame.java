@@ -40,7 +40,7 @@ public class WhenAddingPointForReceiver_theGame {
         game.start();
         assertThat(game.serverScore().points()).isEqualTo(LOVE);
 
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
 
         verify(mockGameScoringRules, times(1)).addPointToReceiverScore(game);
     }

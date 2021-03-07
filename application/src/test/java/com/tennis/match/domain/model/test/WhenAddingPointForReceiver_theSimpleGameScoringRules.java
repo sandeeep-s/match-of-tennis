@@ -35,7 +35,7 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
 
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
         assertThat(game.receiverScore().points()).isEqualTo(FIFTEEN);
 
         simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
@@ -46,8 +46,8 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
 
-        game.addPointForReceiver();
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
         assertThat(game.receiverScore().points()).isEqualTo(THIRTY);
 
         simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
@@ -58,9 +58,9 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     @Test
     void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
         assertThat(game.receiverScore().points()).isEqualTo(FORTY);
 
         simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
@@ -71,10 +71,10 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     @Test
     void shouldFailWithError_given_gameIsAlreadyWon() {
 
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
         assertThat(game.receiverScore().points()).isEqualTo(GAME);
 
         Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.addPointToReceiverScore(game));
@@ -86,16 +86,16 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     void shouldActivateDeuceRule_given_bothPlayersReachScoreForty() {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
+        game.addPointToServerScore();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        assertThat(game.receiverScore().points()).isEqualTo(THIRTY);
 
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
+        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
 
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 
@@ -107,15 +107,15 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
+        game.addPointToReceiverScore();
         assertThat(game.receiverScore().points()).isEqualTo(FORTY);
 
-        game.addPointForReceiver();
+        game.addPointToReceiverScore();
 
         assertThat(game.receiverScore().points()).isEqualTo("AD");
     }

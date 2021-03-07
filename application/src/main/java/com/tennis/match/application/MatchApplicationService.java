@@ -21,6 +21,6 @@ public class MatchApplicationService {
     public void changeScoreOfCurrentGame(MatchId matchId) {
         Match match = matchRepository.matchWith(matchId);
         Game game = match.currentGame();
-        game.addPointForServer();
+        game.addPointToServerScore();
     }
 }

@@ -36,7 +36,7 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
 
-        game.addPointForServer();
+        game.addPointToServerScore();
         assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
 
         simpleGameScoringRulesUnderTest.addPointToServerScore(game);
@@ -47,8 +47,8 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
 
-        game.addPointForServer();
-        game.addPointForServer();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
         assertThat(game.serverScore().points()).isEqualTo(THIRTY);
 
         simpleGameScoringRulesUnderTest.addPointToServerScore(game);
@@ -59,9 +59,9 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
     @Test
     void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
-        game.addPointForServer();
-        game.addPointForServer();
-        game.addPointForServer();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
         simpleGameScoringRulesUnderTest.addPointToServerScore(game);
@@ -72,10 +72,10 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
     @Test
     void shouldFailWithError_given_gameIsAlreadyWon() {
 
-        game.addPointForServer();
-        game.addPointForServer();
-        game.addPointForServer();
-        game.addPointForServer();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
+        game.addPointToServerScore();
         assertThat(game.serverScore().points()).isEqualTo(GAME);
 
         Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.addPointToServerScore(game));
@@ -88,12 +88,12 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
 
-        game.addPointForServer();
-        game.addPointForReceiver();
-        game.addPointForServer();
-        game.addPointForReceiver();
-        game.addPointForServer();
-        game.addPointForReceiver();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
 
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
         assertThat(game.receiverScore().points()).isEqualTo(FORTY);
@@ -108,15 +108,15 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
         TennisMatchSet set = TennisMatchSet.builder().build();
         Game game = Game.from(gameId, set);
         game.start();
-        game.addPointForServer();
-        game.addPointForReceiver();
-        game.addPointForServer();
-        game.addPointForReceiver();
-        game.addPointForServer();
-        game.addPointForReceiver();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
+        game.addPointToServerScore();
+        game.addPointToReceiverScore();
         assertThat(game.serverScore().points()).isEqualTo(FORTY);
 
-        game.addPointForServer();
+        game.addPointToServerScore();
 
         assertThat(game.serverScore().points()).isEqualTo("AD");
     }

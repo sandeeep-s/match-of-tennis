@@ -36,7 +36,7 @@ public class WhenAddingPointForServer_theGame {
         game.start();
         assertThat(game.serverScore().points()).isEqualTo(LOVE);
 
-        game.addPointForServer();
+        game.addPointToServerScore();
 
         verify(mockGameScoringRules, times(1)).addPointToServerScore(game);
     }
