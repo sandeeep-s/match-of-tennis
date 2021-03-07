@@ -10,8 +10,9 @@ public class TennisMatchSet {
     private List<Game> games;
     private Game gameInProgress;
 
-    public Game startNewGame() {
-        return Game.from(newGameId(), this);
+    public void startNewGame() {
+        Game game = Game.from(newGameId(), this);
+        game.start();
     }
 
     private GameId newGameId() {

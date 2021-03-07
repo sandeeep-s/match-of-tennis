@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -36,7 +38,18 @@ public class WhenStartingNewGame_theTennisMatchSet {
 
             gameMockedStatic.verify(() -> Game.from(gameIdArgumentCaptor.capture(),setArgumentCaptor.capture()));
         }
-
-
     }
+
+    @Test
+    void shouldStartNewlyCreatedGame(){
+        try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
+            gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(mockGame);
+
+            setUnderTest.startNewGame();
+
+            verify(mockGame, times(1)).start();
+        }
+    }
+
+
 }
