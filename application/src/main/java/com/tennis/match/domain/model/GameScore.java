@@ -2,11 +2,9 @@ package com.tennis.match.domain.model;
 
 public class GameScore {
 
-    private Player player;
     private Points pointsWon;
 
-    public GameScore(Player player) {
-        this.player = player;
+    public GameScore() {
     }
 
     public String value() {

@@ -1,13 +1,41 @@
 package com.tennis.match.domain.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
+@Getter(AccessLevel.PRIVATE)
 public class Game {
 
+    private GameId gameId;
+    private TennisMatchSet partOfSet;
     private GameScore playerOneScore;
     private GameScore playerTwoScore;
 
-    public Game(Player playerOne, Player playerTwo) {
-        playerOneScore = new GameScore(playerOne);
-        playerTwoScore = new GameScore(playerTwo);
+    private Game(GameId gameId, TennisMatchSet set) {
+        setGameId(gameId);
+        setPartOfSet(set);
+        setPlayerOneScore(new GameScore());
+        setPlayerTwoScore(new GameScore());
+    }
+
+    public static Game from(GameId gameId, TennisMatchSet set) {
+        return new Game(gameId, set);
+    }
+
+    private void setGameId(GameId gameId) {
+        this.gameId = gameId;
+    }
+
+    private void setPartOfSet(TennisMatchSet set) {
+        this.partOfSet = set;
+    }
+
+    private void setPlayerOneScore(GameScore playerOneScore) {
+        this.playerOneScore = playerOneScore;
+    }
+
+    private void setPlayerTwoScore(GameScore playerTwoScore) {
+        this.playerTwoScore = playerTwoScore;
     }
 
     public void start() {
@@ -16,11 +44,11 @@ public class Game {
     }
 
     public GameScore playerOneScore() {
-        return playerOneScore;
+        return getPlayerOneScore();
     }
 
     public GameScore playerTwoScore() {
-        return playerTwoScore;
+        return getPlayerTwoScore();
     }
 
     public void playerOneWinsPoint() {

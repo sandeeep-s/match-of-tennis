@@ -1,7 +1,7 @@
 package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.Match;
-import com.tennis.match.domain.model.Set;
+import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,7 +14,7 @@ public class WhenStartingNewGame_theMatch{
 
     private Match matchUnderTest;
     @Mock
-    private Set mockSet;
+    private TennisMatchSet mockSet;
 
     @BeforeEach
     void setUp() {

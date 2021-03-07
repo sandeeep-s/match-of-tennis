@@ -1,7 +1,9 @@
 package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.Game;
+import com.tennis.match.domain.model.GameId;
 import com.tennis.match.domain.model.Player;
+import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -11,9 +13,10 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldChangeScoreToFifteen_given_currentScoreWasZero(){
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        Game game = new Game(playerOne, playerTwo);
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+
+        Game game = Game.from(gameId, set);
         game.start();
         assertThat(game.playerOneScore().value()).isEqualTo("0");
 
@@ -24,9 +27,9 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen(){
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        Game game = new Game(playerOne, playerTwo);
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
         game.start();
         game.playerOneWinsPoint();
         assertThat(game.playerOneScore().value()).isEqualTo("15");
@@ -38,9 +41,9 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty(){
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        Game game = new Game(playerOne, playerTwo);
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
         game.start();
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();
@@ -53,9 +56,9 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldWinGame_given_currentScoreWasForty(){
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        Game game = new Game(playerOne, playerTwo);
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
         game.start();
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();
@@ -69,9 +72,9 @@ public class WhenPlayerWinsPoint_theGame {
 
     @Test
     void shouldFailWithError_given_gameIsALreadyWon(){
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
-        Game game = new Game(playerOne, playerTwo);
+        GameId gameId = GameId.from(1);
+        TennisMatchSet set = TennisMatchSet.builder().build();
+        Game game = Game.from(gameId, set);
         game.start();
         game.playerOneWinsPoint();
         game.playerOneWinsPoint();

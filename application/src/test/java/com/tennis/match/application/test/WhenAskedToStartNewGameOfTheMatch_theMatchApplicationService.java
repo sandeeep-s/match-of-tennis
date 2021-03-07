@@ -29,6 +29,7 @@ public class WhenAskedToStartNewGameOfTheMatch_theMatchApplicationService {
     void shouldFetchTheMatchFromRepository(){
 
         MatchId matchId = MatchId.from(1);
+        when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
 
         matchApplicationServiceUnderTest.startNewGameOfMatchWith(matchId);
 
