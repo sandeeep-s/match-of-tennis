@@ -1,16 +1,13 @@
 package com.tennis.match.domain.model.test;
 
-import com.tennis.match.domain.model.Game;
-import com.tennis.match.domain.model.GameId;
-import com.tennis.match.domain.model.Player;
-import com.tennis.match.domain.model.TennisMatchSet;
+import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenStartingNewGame_theTennisMatchSet {
@@ -48,6 +45,19 @@ public class WhenStartingNewGame_theTennisMatchSet {
             setUnderTest.startNewGame();
 
             verify(mockGame, times(1)).start();
+        }
+    }
+
+    @Test
+    void shouldMakeNewlyCreatedGameAsInProgress(){
+
+        Game createdMockGame = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1)));
+        try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
+            gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(createdMockGame);
+
+            setUnderTest.startNewGame();
+
+            assertThat(setUnderTest.gameInProgress().gameId()).isEqualTo(createdMockGame.gameId());
         }
     }
 

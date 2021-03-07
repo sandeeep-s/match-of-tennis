@@ -11,17 +11,42 @@ public class Game {
     private GameScore playerOneScore;
     private GameScore playerTwoScore;
 
+    public static Game from(GameId gameId, TennisMatchSet set) {
+        return new Game(gameId, set);
+    }
+
+    public void start() {
+        playerOneScore.initialize();
+        playerTwoScore.initialize();
+    }
+
+    public void playerOneWinsPoint() {
+        playerOneScore.addPoint();
+    }
+
+    public GameId gameId() {
+        return getGameId();
+    }
+
+    public TennisMatchSet partOfSet() {
+        return getPartOfSet();
+    }
+
+    public GameScore playerOneScore() {
+        return getPlayerOneScore();
+    }
+
+    public GameScore playerTwoScore() {
+        return getPlayerTwoScore();
+    }
+
+
     private Game(GameId gameId, TennisMatchSet set) {
         setGameId(gameId);
         setPartOfSet(set);
         setPlayerOneScore(new GameScore());
         setPlayerTwoScore(new GameScore());
     }
-
-    public static Game from(GameId gameId, TennisMatchSet set) {
-        return new Game(gameId, set);
-    }
-
     private void setGameId(GameId gameId) {
         this.gameId = gameId;
     }
@@ -38,20 +63,4 @@ public class Game {
         this.playerTwoScore = playerTwoScore;
     }
 
-    public void start() {
-        playerOneScore.initialize();
-        playerTwoScore.initialize();
-    }
-
-    public GameScore playerOneScore() {
-        return getPlayerOneScore();
-    }
-
-    public GameScore playerTwoScore() {
-        return getPlayerTwoScore();
-    }
-
-    public void playerOneWinsPoint() {
-        playerOneScore.addPoint();
-    }
 }
