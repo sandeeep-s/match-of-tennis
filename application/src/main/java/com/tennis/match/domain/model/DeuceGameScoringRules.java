@@ -4,14 +4,20 @@ public class DeuceGameScoringRules implements GameScoringRules {
 
     @Override
     public void addPointToServerScore(Game game) {
-        Points updatedPoints = game.serverScore().points().nextPoint();
-        game.setServerScore(GameScore.of(updatedPoints));
+        if(game.receiverScore().points() == Points.ADVANTAGE){
+            game.setReceiverScore(GameScore.of(game.receiverScore().points().prevPoint()));
+        }else{
+            game.setServerScore(GameScore.of(game.serverScore().points().nextPoint()));
+        }
     }
 
     @Override
     public void addPointToReceiverScore(Game game) {
-        Points updatedPoints = game.receiverScore().points().nextPoint();
-        game.setReceiverScore(GameScore.of(updatedPoints));
+        if(game.serverScore().points() == Points.ADVANTAGE){
+            game.setServerScore(GameScore.of(game.serverScore().points().prevPoint()));
+        }else{
+            game.setReceiverScore(GameScore.of(game.receiverScore().points().nextPoint()));
+        }
     }
 
     @Override

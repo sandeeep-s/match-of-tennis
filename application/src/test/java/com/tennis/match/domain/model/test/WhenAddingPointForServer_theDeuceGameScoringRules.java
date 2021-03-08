@@ -53,5 +53,17 @@ public class WhenAddingPointForServer_theDeuceGameScoringRules {
         assertThat(game.serverScore().points()).isEqualTo(GAME);
     }
 
+    @Test
+    void shouldChangeScoreOfReceiverToForty_given_receiverHasAdvantage() {
+
+        game.addPointToReceiverScore();
+        assertThat(game.receiverScore().points()).isEqualTo(ADVANTAGE);
+
+        deuceGameScoringRulesUnderTest.addPointToServerScore(game);
+
+        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+    }
+
 
 }
