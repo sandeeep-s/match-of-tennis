@@ -23,4 +23,9 @@ public class MatchApplicationService {
         Game game = match.currentGame();
         game.addPointToServerScore();
     }
+
+    public void startNewSetOfMatchWith(MatchId matchId) {
+        Match match = matchRepository.matchWith(matchId);
+        match.startNewSet();
+    }
 }

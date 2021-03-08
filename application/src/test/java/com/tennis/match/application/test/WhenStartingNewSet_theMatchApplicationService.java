@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class WhenStartingNewGameOfTheMatch_theMatchApplicationService {
+public class WhenStartingNewSet_theMatchApplicationService {
 
     private MatchApplicationService matchApplicationServiceUnderTest;
     @Mock
@@ -31,20 +31,20 @@ public class WhenStartingNewGameOfTheMatch_theMatchApplicationService {
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
 
-        matchApplicationServiceUnderTest.startNewGameOfMatchWith(matchId);
+        matchApplicationServiceUnderTest.startNewSetOfMatchWith(matchId);
 
         verify(mockMatchRepository, times(1)).matchWith(matchId);
     }
 
     @Test
-    void shouldAskMatchToStartNewGame_given_matchWasFoundInRepository(){
+    void shouldAskMatchToStartNewSet_given_matchWasFoundInRepository(){
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
 
-        matchApplicationServiceUnderTest.startNewGameOfMatchWith(matchId);
+        matchApplicationServiceUnderTest.startNewSetOfMatchWith(matchId);
 
-        verify(mockMatch, times(1)).startNewGame();
+        verify(mockMatch, times(1)).startNewSet();
     }
 
 }

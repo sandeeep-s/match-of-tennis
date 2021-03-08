@@ -19,4 +19,7 @@ public class Match {
     public Game currentGame() {
         return currentSet.currentGame();
     }
+
+    public void startNewSet() {
+    }
 }
