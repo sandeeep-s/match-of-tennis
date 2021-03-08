@@ -1,6 +1,7 @@
 package com.tennis.match.domain.model;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.FORTY;
 
 public class SimpleGameScoringRules implements GameScoringRules {
@@ -30,7 +31,7 @@ public class SimpleGameScoringRules implements GameScoringRules {
     public boolean isDeuce(Game game) {
 
         return game.scoreOf(PLAYER_ONE) == FORTY
-                && game.scoreOf(PLAYER_ONE) == FORTY;
+                && game.scoreOf(PLAYER_TWO) == FORTY;
     }
 
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tennis.match.domain.model.Points.GAME;
 import static com.tennis.match.domain.model.Points.LOVE;
 
 @Getter(AccessLevel.PRIVATE)
@@ -47,8 +48,10 @@ public class Game {
     }
 
     public void updateScoreOf(PlayerNumber playerNumber, Points points) {
-        System.out.println("points="+points);
         getScores().put(playerNumber, GameScore.of(points));
+        if(points == GAME){
+            partOfSet().gameWonBy(playerNumber, this);
+        }
     }
 
     protected Game(GameId gameId, TennisMatchSet set) {

@@ -3,16 +3,21 @@ package com.tennis.match.domain.model;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 
 @Getter(AccessLevel.PRIVATE)
+@Setter(AccessLevel.PRIVATE)
 public class TennisMatchSet {
 
     private SetId setId;
     private List<Game> games;
     private Game currentGame;
-    private SetScore playerOneScore;
-    private SetScore playerTwoScore;
+    private Map<PlayerNumber, List<Game>> gamesWonByPlayers;
 
     public static TennisMatchSet from(SetId setId) {
         return new TennisMatchSet(setId);
@@ -24,20 +29,20 @@ public class TennisMatchSet {
         setCurrentGame(game);
     }
 
+    public int scoreOf(PlayerNumber playerNumber){
+        return getGamesWonByPlayers().get(playerNumber).size();
+    }
+
+    void gameWonBy(PlayerNumber playerNumber, Game game){
+        getGamesWonByPlayers().get(playerNumber).add(game);
+    }
+
     public SetId setId() {
         return getSetId();
     }
 
     public List<Game> games() {
         return getGames();
-    }
-
-    public SetScore playerOneScore() {
-        return getPlayerOneScore();
-    }
-
-    public SetScore playerTwoScore() {
-        return getPlayerTwoScore();
     }
 
     public Game currentGame() {
@@ -51,6 +56,10 @@ public class TennisMatchSet {
     private TennisMatchSet(SetId setId) {
         setSetId(setId);
         setGames(new ArrayList<>());
+        setGamesWonByPlayers(new HashMap<>(
+                Map.of(PLAYER_ONE, new ArrayList<>(),
+                        PLAYER_TWO, new ArrayList<>())
+        ));
     }
 
     private void setSetId(SetId setId) {
@@ -63,14 +72,6 @@ public class TennisMatchSet {
 
     private void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
-    }
-
-    public void setPlayerOneScore(SetScore playerOneScore) {
-        this.playerOneScore = playerOneScore;
-    }
-
-    public void setPlayerTwoScore(SetScore playerTwoScore) {
-        this.playerTwoScore = playerTwoScore;
     }
 
     private List<Game> getGames() {
