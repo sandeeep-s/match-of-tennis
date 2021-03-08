@@ -18,8 +18,8 @@ public class WhenNewGameStarts_theGame {
 
         Game game = Game.from(gameId, set);
 
-        assertThat(game.currentScoreOf(PLAYER_ONE)).isEqualTo(LOVE);
-        assertThat(game.currentScoreOf(PLAYER_TWO)).isEqualTo(LOVE);
+        assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
+        assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(LOVE);
     }
 
     @Test

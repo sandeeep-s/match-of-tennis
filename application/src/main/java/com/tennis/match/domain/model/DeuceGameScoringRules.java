@@ -9,15 +9,15 @@ public class DeuceGameScoringRules implements GameScoringRules {
     @Override
     public void scorePoint(Game game, PlayerNumber playerNumber) {
         PlayerNumber oppositePlayerNumber = playerNumber.oppositePlayerNumber();
-        if(game.currentScoreOf(oppositePlayerNumber) == ADVANTAGE){
-            game.updateScoreOf(oppositePlayerNumber, game.currentScoreOf(oppositePlayerNumber).prevPoint());
+        if(game.scoreOf(oppositePlayerNumber) == ADVANTAGE){
+            game.updateScoreOf(oppositePlayerNumber, game.scoreOf(oppositePlayerNumber).prevPoint());
         }else{
-            game.updateScoreOf(playerNumber, game.currentScoreOf(playerNumber).nextPoint());
+            game.updateScoreOf(playerNumber, game.scoreOf(playerNumber).nextPoint());
         }
     }
 
     @Override
     public boolean isDeuce(Game game) {
-        return game.currentScoreOf(PLAYER_ONE) == game.currentScoreOf(PLAYER_TWO);
+        return game.scoreOf(PLAYER_ONE) == game.scoreOf(PLAYER_TWO);
     }
 }

@@ -2,13 +2,13 @@ package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.Match;
 import com.tennis.match.domain.model.MatchId;
+import com.tennis.match.domain.model.Player;
 import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenFetchingCurrentGame_theMatch {
@@ -20,7 +20,18 @@ public class WhenFetchingCurrentGame_theMatch {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        matchUnderTest = Match.builder().matchId(MatchId.from(1)).build();
+        matchUnderTest = new TestableMatch();
+    }
+
+    private class TestableMatch extends Match{
+        public TestableMatch() {
+            super(MatchId.from(1), null, null, 3);
+        }
+
+        @Override
+        public TennisMatchSet currentSet() {
+            return mockSet;
+        }
     }
 
     @Test

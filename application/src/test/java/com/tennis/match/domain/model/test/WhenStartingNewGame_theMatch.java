@@ -20,7 +20,18 @@ public class WhenStartingNewGame_theMatch{
     @BeforeEach
     void setUp() {
         openMocks(this);
-        matchUnderTest = Match.builder().matchId(MatchId.from(1)).build();
+        matchUnderTest = new TestableMatch();
+    }
+
+    private class TestableMatch extends Match{
+        public TestableMatch() {
+            super(MatchId.from(1), null, null, 3);
+        }
+
+        @Override
+        public TennisMatchSet currentSet() {
+            return mockSet;
+        }
     }
 
     @Test

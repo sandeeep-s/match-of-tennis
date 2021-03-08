@@ -11,7 +11,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class WhenAddingPointForServer_theGame {
+public class WhenPlayerScoresPoint_theGame {
 
     @Mock
     private GameScoringRules mockGameScoringRules;
@@ -29,12 +29,12 @@ public class WhenAddingPointForServer_theGame {
     }
 
     @Test
-    void shouldAskGameScoringRulesToCalculateNewServerScore() {
+    void shouldAskGameScoringRulesToScorePoint() {
 
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         Game game = new TestableGame(gameId, set, mockGameScoringRules);
-        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(LOVE);
+        assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
 
         game.scorePoint(PLAYER_ONE);
 

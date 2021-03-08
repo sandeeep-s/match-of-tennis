@@ -42,15 +42,12 @@ public class Game {
         return getGameScoringRules();
     }
 
-    public Map<PlayerNumber, GameScore> scores() {
-        return scores;
-    }
-
-    public Points currentScoreOf(PlayerNumber playerNumber){
-        return getScores().get(playerNumber.oppositePlayerNumber()).points();
+    public Points scoreOf(PlayerNumber playerNumber){
+        return getScores().get(playerNumber).points();
     }
 
     public void updateScoreOf(PlayerNumber playerNumber, Points points) {
+        System.out.println("points="+points);
         getScores().put(playerNumber, GameScore.of(points));
     }
 

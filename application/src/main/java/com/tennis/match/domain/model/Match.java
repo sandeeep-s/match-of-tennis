@@ -19,11 +19,11 @@ public class Match {
     private TennisMatchSet currentSet;
 
     public void startNewGame() {
-        currentSet.startNewGame();
+        currentSet().startNewGame();
     }
 
     public Game currentGame() {
-        return currentSet.currentGame();
+        return currentSet().currentGame();
     }
 
     public TennisMatchSet currentSet() {
@@ -40,11 +40,16 @@ public class Match {
     }
 
     @Builder
-    private Match(MatchId matchId, Player playerOne, Player playerTwo) {
+    protected Match(MatchId matchId, Player playerOne, Player playerTwo, int numberOfSets) {
         setMatchId(matchId);
         setPlayerOne(playerOne);
         setPlayerTwo(playerTwo);
-        setSets(new ArrayList<>());
+        List<TennisMatchSet> sets = new ArrayList<>();
+        for (int i = 1; i <= numberOfSets;i++){
+            sets.add(TennisMatchSet.from(SetId.from(i)));
+        }
+        setSets(sets);
+        currentSet = getSets().get(0);
     }
 
     public void setPlayerOne(Player playerOne) {

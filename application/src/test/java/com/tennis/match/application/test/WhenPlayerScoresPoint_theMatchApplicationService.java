@@ -31,6 +31,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
+        when(mockMatch.currentGame()).thenReturn(mockGame);
 
         matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
@@ -42,6 +43,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
+        when(mockMatch.currentGame()).thenReturn(mockGame);
 
         matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
@@ -49,7 +51,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
     }
 
     @Test
-    void shouldAskGameToAddPointForServer(){
+    void shouldAskGameToScorePoint(){
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);

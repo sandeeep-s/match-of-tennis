@@ -22,7 +22,7 @@ public class WhenStartingNewSet_theMatch {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        matchUnderTest = Match.builder().matchId(MatchId.from(1)).build();
+        matchUnderTest = Match.builder().matchId(MatchId.from(1)).numberOfSets(3).build();
     }
 
     @Test
