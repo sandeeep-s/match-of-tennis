@@ -7,7 +7,7 @@ import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.tennis.match.domain.model.Points.ADVANTAGE;
+import static com.tennis.match.domain.model.Points.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class WhenAddingPointForServer_theDeuceGameScoringRules {
@@ -40,5 +40,18 @@ public class WhenAddingPointForServer_theDeuceGameScoringRules {
 
         assertThat(game.serverScore().points()).isEqualTo(ADVANTAGE);
     }
+
+    @Test
+    void shouldChangeScoreOfServerToGame_given_serverHasAdvantage() {
+
+        game.addPointToServerScore();
+        assertThat(game.serverScore().points()).isEqualTo(ADVANTAGE);
+        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+
+        deuceGameScoringRulesUnderTest.addPointToServerScore(game);
+
+        assertThat(game.serverScore().points()).isEqualTo(GAME);
+    }
+
 
 }
