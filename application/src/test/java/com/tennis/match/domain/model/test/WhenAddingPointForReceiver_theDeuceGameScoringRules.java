@@ -4,9 +4,9 @@ import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 public class WhenAddingPointForReceiver_theDeuceGameScoringRules {
 
@@ -17,15 +17,14 @@ public class WhenAddingPointForReceiver_theDeuceGameScoringRules {
     void setUp() {
         deuceGameScoringRulesUnderTest = new DeuceGameScoringRules();
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         game = Game.from(gameId, set);
-        game.start();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 
@@ -34,33 +33,33 @@ public class WhenAddingPointForReceiver_theDeuceGameScoringRules {
 
         assertThat(game.isDeuce()).isTrue();
 
-        deuceGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(ADVANTAGE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(ADVANTAGE);
     }
 
     @Test
     void shouldChangeScoreOfReceiverToGame_given_receiverHasAdvantage() {
 
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(ADVANTAGE);
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(ADVANTAGE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
 
-        deuceGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(GAME);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(GAME);
     }
 
     @Test
     void shouldChangeScoreOfServerToForty_given_serverHasAdvantage() {
 
-        game.addPointToServerScore();
-        assertThat(game.serverScore().points()).isEqualTo(ADVANTAGE);
+        game.scorePoint(PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(ADVANTAGE);
 
-        deuceGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
     }
 
 }

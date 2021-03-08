@@ -1,36 +1,37 @@
 package com.tennis.match.domain.model;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
+import static com.tennis.match.domain.model.Points.FORTY;
+
 public class SimpleGameScoringRules implements GameScoringRules {
 
     @Override
-    public void addPointToServerScore(Game game) {
-        Points updatedPoints = game.serverScore().points().nextPoint();
-        if (updatedPoints == Points.ADVANTAGE){
-            updatedPoints = updatedPoints.nextPoint();
-        }
-        game.setServerScore(GameScore.of(updatedPoints));
+    public void scorePoint(Game game, PlayerNumber playerNumber) {
 
-        if (isDeuce(game)){
+        game.updateScoreOf(playerNumber, calculateNewScore(game, playerNumber));
+
+        if (isDeuce(game)) {
             game.setGameScoringRules(new DeuceGameScoringRules());
         }
     }
 
-    @Override
-    public void addPointToReceiverScore(Game game) {
-        Points updatedPoints = game.receiverScore().points().nextPoint();
-        if (updatedPoints == Points.ADVANTAGE){
+    private Points calculateNewScore(Game game, PlayerNumber playerNumber) {
+
+        Points updatedPoints = game.currentScoreOf(playerNumber).nextPoint();
+
+        if (game.currentScoreOf(playerNumber) == FORTY) {
             updatedPoints = updatedPoints.nextPoint();
         }
-        game.setReceiverScore(GameScore.of(updatedPoints));
 
-        if (isDeuce(game)){
-            game.setGameScoringRules(new DeuceGameScoringRules());
-        }
+        return updatedPoints;
     }
 
     @Override
     public boolean isDeuce(Game game) {
-        return game.serverScore().points() == Points.FORTY && game.receiverScore().points() == Points.FORTY;
+
+        return game.currentScoreOf(PLAYER_ONE) == FORTY
+                && game.currentScoreOf(PLAYER_ONE) == FORTY;
     }
 
 }

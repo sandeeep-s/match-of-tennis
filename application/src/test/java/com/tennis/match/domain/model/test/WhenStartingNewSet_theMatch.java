@@ -40,7 +40,7 @@ public class WhenStartingNewSet_theMatch {
     @Test
     void shouldMakeNewlyCreatedSetAsCurrent() {
 
-        TennisMatchSet tennisMatchSet = TennisMatchSet.builder().setId(SetId.from(1)).build();
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
         try (MockedStatic<TennisMatchSet> gameMockedStatic = Mockito.mockStatic(TennisMatchSet.class)) {
             gameMockedStatic.when(() -> TennisMatchSet.from(any(SetId.class))).thenReturn(tennisMatchSet);
 

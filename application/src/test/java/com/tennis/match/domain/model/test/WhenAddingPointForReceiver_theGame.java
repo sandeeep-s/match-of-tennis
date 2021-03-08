@@ -1,13 +1,11 @@
 package com.tennis.match.domain.model.test;
 
-import com.tennis.match.domain.model.Game;
-import com.tennis.match.domain.model.GameId;
-import com.tennis.match.domain.model.GameScoringRules;
-import com.tennis.match.domain.model.TennisMatchSet;
+import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.LOVE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.times;
@@ -35,14 +33,13 @@ public class WhenAddingPointForReceiver_theGame {
     void shouldAskGameScoringRulesToCalculateNewReceiverScore() {
 
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         Game game = new TestableGame(gameId, set, mockGameScoringRules);
-        game.start();
-        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(LOVE);
 
-        game.addPointToReceiverScore();
+        game.scorePoint(PLAYER_TWO);
 
-        verify(mockGameScoringRules, times(1)).addPointToReceiverScore(game);
+        verify(mockGameScoringRules, times(1)).scorePoint(game, PLAYER_TWO);
     }
 
 }

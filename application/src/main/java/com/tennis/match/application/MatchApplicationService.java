@@ -1,9 +1,6 @@
 package com.tennis.match.application;
 
-import com.tennis.match.domain.model.Game;
-import com.tennis.match.domain.model.Match;
-import com.tennis.match.domain.model.MatchId;
-import com.tennis.match.domain.model.MatchRepository;
+import com.tennis.match.domain.model.*;
 
 public class MatchApplicationService {
 
@@ -18,10 +15,10 @@ public class MatchApplicationService {
         match.startNewGame();
     }
 
-    public void changeScoreOfCurrentGame(MatchId matchId) {
+    public void scorePoint(MatchId matchId, PlayerNumber playerNumber) {
         Match match = matchRepository.matchWith(matchId);
         Game game = match.currentGame();
-        game.addPointToServerScore();
+        game.scorePoint(playerNumber);
     }
 
     public void startNewSetOfMatchWith(MatchId matchId) {

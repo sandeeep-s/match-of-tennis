@@ -4,6 +4,7 @@ import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.Points.*;
 import static com.tennis.match.domain.model.Points.FORTY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -18,67 +19,66 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
     void setUp() {
         simpleGameScoringRulesUnderTest = new SimpleGameScoringRules();
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         game = Game.from(gameId, set);
-        game.start();
     }
 
     @Test
     void shouldChangeScoreToFifteen_given_currentScoreWasZero() {
 
-        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(LOVE);
 
-        simpleGameScoringRulesUnderTest.addPointToServerScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
 
-        assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FIFTEEN);
     }
 
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
 
-        game.addPointToServerScore();
-        assertThat(game.serverScore().points()).isEqualTo(FIFTEEN);
+        game.scorePoint(PLAYER_ONE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FIFTEEN);
 
-        simpleGameScoringRulesUnderTest.addPointToServerScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
 
-        assertThat(game.serverScore().points()).isEqualTo(THIRTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(THIRTY);
     }
 
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
 
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        assertThat(game.serverScore().points()).isEqualTo(THIRTY);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(THIRTY);
 
-        simpleGameScoringRulesUnderTest.addPointToServerScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
 
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
     }
 
     @Test
     void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
 
-        simpleGameScoringRulesUnderTest.addPointToServerScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
 
-        assertThat(game.serverScore().points()).isEqualTo(GAME);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(GAME);
     }
 
     @Test
     void shouldFailWithError_given_gameIsAlreadyWon() {
 
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        assertThat(game.serverScore().points()).isEqualTo(GAME);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PLAYER_ONE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(GAME);
 
-        Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.addPointToServerScore(game));
+        Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE));
 
         assertThat(thrown).isInstanceOf(IllegalStateException.class);
     }
@@ -88,15 +88,15 @@ public class WhenAddingPointForServer_theSimpleGameScoringRules {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
 
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PLAYER_ONE);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
 
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FORTY);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 

@@ -2,31 +2,28 @@ package com.tennis.match.domain.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.tennis.match.domain.model.Points.LOVE;
 
 @Getter(AccessLevel.PRIVATE)
+@Setter(AccessLevel.PRIVATE)
 public class Game {
 
     private GameId gameId;
     private TennisMatchSet partOfSet;
-    private GameScore serverScore;
-    private GameScore receiverScore;
+    private Map<PlayerNumber, GameScore> scores;
     private GameScoringRules gameScoringRules;
 
     public static Game from(GameId gameId, TennisMatchSet set) {
         return new Game(gameId, set);
     }
 
-    public void start() {
-    }
-
-    public void addPointToServerScore() {
-        gameScoringRules.addPointToServerScore(this);
-    }
-
-    public void addPointToReceiverScore() {
-        gameScoringRules.addPointToReceiverScore(this);
+    public void scorePoint(PlayerNumber playerNumber) {
+        gameScoringRules.scorePoint(this, playerNumber);
     }
 
     public boolean isDeuce() {
@@ -41,25 +38,31 @@ public class Game {
         return getPartOfSet();
     }
 
-    public GameScore serverScore() {
-        return getServerScore();
-    }
-
-    public GameScore receiverScore() {
-        return getReceiverScore();
-    }
-
     public GameScoringRules gameRules() {
         return getGameScoringRules();
+    }
+
+    public Map<PlayerNumber, GameScore> scores() {
+        return scores;
+    }
+
+    public Points currentScoreOf(PlayerNumber playerNumber){
+        return getScores().get(playerNumber.oppositePlayerNumber()).points();
+    }
+
+    public void updateScoreOf(PlayerNumber playerNumber, Points points) {
+        getScores().put(playerNumber, GameScore.of(points));
     }
 
     protected Game(GameId gameId, TennisMatchSet set) {
         setGameId(gameId);
         setPartOfSet(set);
-        setServerScore(GameScore.of(LOVE));
-        setReceiverScore(GameScore.of(LOVE));
+        setScores(new HashMap<>(
+                Map.of(PlayerNumber.PLAYER_ONE, GameScore.of(LOVE),
+                        PlayerNumber.PLAYER_TWO, GameScore.of(LOVE))));
         setGameScoringRules(new SimpleGameScoringRules());
     }
+
     private void setGameId(GameId gameId) {
         this.gameId = gameId;
     }
@@ -68,15 +71,12 @@ public class Game {
         this.partOfSet = set;
     }
 
-    void setServerScore(GameScore serverScore) {
-        this.serverScore = serverScore;
-    }
-
-    void setReceiverScore(GameScore receiverScore) {
-        this.receiverScore = receiverScore;
+    public void setScores(Map<PlayerNumber, GameScore> scores) {
+        this.scores = scores;
     }
 
     protected void setGameScoringRules(GameScoringRules gameScoringRules) {
         this.gameScoringRules = gameScoringRules;
     }
+
 }

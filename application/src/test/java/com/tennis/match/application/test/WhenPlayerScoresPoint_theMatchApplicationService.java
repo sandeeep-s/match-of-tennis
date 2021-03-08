@@ -1,18 +1,16 @@
 package com.tennis.match.application.test;
 
 import com.tennis.match.application.MatchApplicationService;
-import com.tennis.match.domain.model.Game;
-import com.tennis.match.domain.model.Match;
-import com.tennis.match.domain.model.MatchId;
-import com.tennis.match.domain.model.MatchRepository;
+import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class WhenAddingPointForServerInCurrentGame_theMatchApplicationService {
+public class WhenPlayerScoresPoint_theMatchApplicationService {
 
     private MatchApplicationService matchApplicationServiceUnderTest;
     @Mock
@@ -34,7 +32,7 @@ public class WhenAddingPointForServerInCurrentGame_theMatchApplicationService {
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
 
-        matchApplicationServiceUnderTest.changeScoreOfCurrentGame(matchId);
+        matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
         verify(mockMatchRepository, times(1)).matchWith(matchId);
     }
@@ -45,7 +43,7 @@ public class WhenAddingPointForServerInCurrentGame_theMatchApplicationService {
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
 
-        matchApplicationServiceUnderTest.changeScoreOfCurrentGame(matchId);
+        matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
         verify(mockMatch, times(1)).currentGame();
     }
@@ -57,9 +55,9 @@ public class WhenAddingPointForServerInCurrentGame_theMatchApplicationService {
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
         when(mockMatch.currentGame()).thenReturn(mockGame);
 
-        matchApplicationServiceUnderTest.changeScoreOfCurrentGame(matchId);
+        matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
-        verify(mockGame, times(1)).addPointToServerScore();
+        verify(mockGame, times(1)).scorePoint(PLAYER_ONE);
     }
 
 }

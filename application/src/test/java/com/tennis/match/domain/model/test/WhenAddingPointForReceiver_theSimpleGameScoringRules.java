@@ -4,6 +4,7 @@ import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -17,67 +18,66 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     void setUp() {
         simpleGameScoringRulesUnderTest = new SimpleGameScoringRules();
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         game = Game.from(gameId, set);
-        game.start();
     }
 
     @Test
     void shouldChangeScoreToFifteen_given_currentScoreWasZero() {
 
-        assertThat(game.receiverScore().points()).isEqualTo(LOVE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(LOVE);
 
-        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(FIFTEEN);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FIFTEEN);
     }
 
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
 
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(FIFTEEN);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FIFTEEN);
 
-        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(THIRTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(THIRTY);
     }
 
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
 
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(THIRTY);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(THIRTY);
 
-        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FORTY);
     }
 
     @Test
     void shouldChangeScoreToGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(FORTY);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(FORTY);
 
-        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
-        assertThat(game.receiverScore().points()).isEqualTo(GAME);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(GAME);
     }
 
     @Test
     void shouldFailWithError_given_gameIsAlreadyWon() {
 
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        assertThat(game.receiverScore().points()).isEqualTo(GAME);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(GAME);
 
-        Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.addPointToReceiverScore(game));
+        Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO));
 
         assertThat(thrown).isInstanceOf(IllegalStateException.class);
     }
@@ -86,15 +86,15 @@ public class WhenAddingPointForReceiver_theSimpleGameScoringRules {
     void shouldActivateDeuceRule_given_bothPlayersReachScoreForty() {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToServerScore();
-        game.addPointToReceiverScore();
-        game.addPointToReceiverScore();
-        assertThat(game.serverScore().points()).isEqualTo(FORTY);
-        assertThat(game.receiverScore().points()).isEqualTo(THIRTY);
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(FORTY);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_TWO).points()).isEqualTo(THIRTY);
 
-        simpleGameScoringRulesUnderTest.addPointToReceiverScore(game);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }

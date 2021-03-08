@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.Points.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
@@ -31,14 +32,13 @@ public class WhenAddingPointForServer_theGame {
     void shouldAskGameScoringRulesToCalculateNewServerScore() {
 
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.builder().build();
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         Game game = new TestableGame(gameId, set, mockGameScoringRules);
-        game.start();
-        assertThat(game.serverScore().points()).isEqualTo(LOVE);
+        assertThat(game.scores().get(PlayerNumber.PLAYER_ONE).points()).isEqualTo(LOVE);
 
-        game.addPointToServerScore();
+        game.scorePoint(PLAYER_ONE);
 
-        verify(mockGameScoringRules, times(1)).addPointToServerScore(game);
+        verify(mockGameScoringRules, times(1)).scorePoint(game, PLAYER_ONE);
     }
 
 }

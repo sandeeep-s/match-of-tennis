@@ -26,12 +26,12 @@ public class SetId implements Serializable {
         this.value = aValue;
     }
 
-    public static SetId from(int partnerNumber) {
-        return new SetId(partnerNumber);
+    public static SetId from(int setId) {
+        return new SetId(setId);
     }
 
-    public static SetId from(SetId partnerNumber) {
-        return new SetId(partnerNumber.value());
+    public static SetId from(SetId setId) {
+        return new SetId(setId.value());
     }
 
     public int value() {

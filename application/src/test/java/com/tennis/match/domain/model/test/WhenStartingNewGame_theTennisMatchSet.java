@@ -24,7 +24,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        setUnderTest = TennisMatchSet.builder().currentGame(mockGame).build();
+        setUnderTest = TennisMatchSet.from(SetId.from(1));;
     }
 
     @Test
@@ -36,18 +36,6 @@ public class WhenStartingNewGame_theTennisMatchSet {
             setUnderTest.startNewGame();
 
             gameMockedStatic.verify(() -> Game.from(gameIdArgumentCaptor.capture(),setArgumentCaptor.capture()));
-        }
-    }
-
-    @Test
-    void shouldStartNewlyCreatedGame(){
-
-        try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
-            gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(mockGame);
-
-            setUnderTest.startNewGame();
-
-            verify(mockGame, times(1)).start();
         }
     }
 

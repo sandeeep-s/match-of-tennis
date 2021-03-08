@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter(AccessLevel.PRIVATE)
-@Builder
-@AllArgsConstructor
 public class TennisMatchSet {
 
     private SetId setId;
@@ -23,7 +21,6 @@ public class TennisMatchSet {
     public void startNewGame() {
         Game game = Game.from(newGameId(), this);
         games.add(game);
-        game.start();
         setCurrentGame(game);
     }
 
@@ -33,6 +30,14 @@ public class TennisMatchSet {
 
     public List<Game> games() {
         return getGames();
+    }
+
+    public SetScore playerOneScore() {
+        return getPlayerOneScore();
+    }
+
+    public SetScore playerTwoScore() {
+        return getPlayerTwoScore();
     }
 
     public Game currentGame() {
@@ -46,10 +51,6 @@ public class TennisMatchSet {
     private TennisMatchSet(SetId setId) {
         setSetId(setId);
         setGames(new ArrayList<>());
-/*
-        setPlayerOneScore(SetScore.from(0));
-        setPlayerTwoScore(SetScore.from(0));
-*/
     }
 
     private void setSetId(SetId setId) {

@@ -1,27 +1,23 @@
 package com.tennis.match.domain.model;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
+import static com.tennis.match.domain.model.Points.ADVANTAGE;
+
 public class DeuceGameScoringRules implements GameScoringRules {
 
     @Override
-    public void addPointToServerScore(Game game) {
-        if(game.receiverScore().points() == Points.ADVANTAGE){
-            game.setReceiverScore(GameScore.of(game.receiverScore().points().prevPoint()));
+    public void scorePoint(Game game, PlayerNumber playerNumber) {
+        PlayerNumber oppositePlayerNumber = playerNumber.oppositePlayerNumber();
+        if(game.currentScoreOf(oppositePlayerNumber) == ADVANTAGE){
+            game.updateScoreOf(oppositePlayerNumber, game.currentScoreOf(oppositePlayerNumber).prevPoint());
         }else{
-            game.setServerScore(GameScore.of(game.serverScore().points().nextPoint()));
-        }
-    }
-
-    @Override
-    public void addPointToReceiverScore(Game game) {
-        if(game.serverScore().points() == Points.ADVANTAGE){
-            game.setServerScore(GameScore.of(game.serverScore().points().prevPoint()));
-        }else{
-            game.setReceiverScore(GameScore.of(game.receiverScore().points().nextPoint()));
+            game.updateScoreOf(playerNumber, game.currentScoreOf(playerNumber).nextPoint());
         }
     }
 
     @Override
     public boolean isDeuce(Game game) {
-        return game.serverScore().points() == game.receiverScore().points();
+        return game.currentScoreOf(PLAYER_ONE) == game.currentScoreOf(PLAYER_TWO);
     }
 }
