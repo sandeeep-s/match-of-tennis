@@ -39,7 +39,6 @@ public class Match {
         return SetId.from(1);
     }
 
-    @Builder
     protected Match(MatchId matchId, Player playerOne, Player playerTwo, int numberOfSets) {
         setMatchId(matchId);
         setPlayerOne(playerOne);
@@ -49,10 +48,13 @@ public class Match {
             sets.add(TennisMatchSet.from(SetId.from(i)));
         }
         setSets(sets);
-        currentSet = getSets().get(0);
+        setCurrentSet(getSets().get(0));
     }
 
-    public void setPlayerOne(Player playerOne) {
+    public static Match from(MatchId matchId, Player playerOne, Player playerTwo, int numberOfSets) {
+        return new Match(matchId, playerOne, playerTwo, numberOfSets);
+    }
+        public void setPlayerOne(Player playerOne) {
         this.playerOne = playerOne;
     }
 

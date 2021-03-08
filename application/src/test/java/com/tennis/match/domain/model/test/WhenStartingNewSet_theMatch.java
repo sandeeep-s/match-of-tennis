@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -22,7 +24,11 @@ public class WhenStartingNewSet_theMatch {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        matchUnderTest = Match.builder().matchId(MatchId.from(1)).numberOfSets(3).build();
+        MatchId matchId = MatchId.from(1);
+        Player playerOne = Player.from(PLAYER_ONE, "Federer");
+        Player playerTwo = Player.from(PLAYER_TWO, "NADAL");
+        int noOfSets = 3;
+        matchUnderTest = Match.from(matchId, playerOne, playerTwo, noOfSets);
     }
 
     @Test
