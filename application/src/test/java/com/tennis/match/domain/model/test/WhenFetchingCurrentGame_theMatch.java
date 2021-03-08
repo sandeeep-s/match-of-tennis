@@ -1,6 +1,7 @@
 package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.Match;
+import com.tennis.match.domain.model.MatchId;
 import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ public class WhenFetchingCurrentGame_theMatch {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        matchUnderTest = Match.builder().currentSet(mockSet).build();
+        matchUnderTest = Match.builder().matchId(MatchId.from(1)).build();
     }
 
     @Test

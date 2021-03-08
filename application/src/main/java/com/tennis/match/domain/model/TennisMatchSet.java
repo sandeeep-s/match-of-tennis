@@ -1,9 +1,6 @@
 package com.tennis.match.domain.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,8 @@ public class TennisMatchSet {
     private SetId setId;
     private List<Game> games;
     private Game currentGame;
+    private SetScore playerOneScore;
+    private SetScore playerTwoScore;
 
     public static TennisMatchSet from(SetId setId) {
         return new TennisMatchSet(setId);
@@ -23,6 +22,7 @@ public class TennisMatchSet {
 
     public void startNewGame() {
         Game game = Game.from(newGameId(), this);
+        games.add(game);
         game.start();
         setCurrentGame(game);
     }
@@ -40,12 +40,16 @@ public class TennisMatchSet {
     }
 
     private GameId newGameId() {
-        return GameId.from(1);
+        return GameId.from(getGames().size() + 1);
     }
 
     private TennisMatchSet(SetId setId) {
         setSetId(setId);
         setGames(new ArrayList<>());
+/*
+        setPlayerOneScore(SetScore.from(0));
+        setPlayerTwoScore(SetScore.from(0));
+*/
     }
 
     private void setSetId(SetId setId) {
@@ -60,4 +64,15 @@ public class TennisMatchSet {
         this.currentGame = currentGame;
     }
 
+    public void setPlayerOneScore(SetScore playerOneScore) {
+        this.playerOneScore = playerOneScore;
+    }
+
+    public void setPlayerTwoScore(SetScore playerTwoScore) {
+        this.playerTwoScore = playerTwoScore;
+    }
+
+    private List<Game> getGames() {
+        return games != null ? games : new ArrayList<>();
+    }
 }

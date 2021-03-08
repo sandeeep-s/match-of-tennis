@@ -25,12 +25,12 @@ public class MatchId implements Serializable {
         this.value = aValue;
     }
 
-    public static MatchId from(long partnerNumber) {
-        return new MatchId(partnerNumber);
+    public static MatchId from(long matchId) {
+        return new MatchId(matchId);
     }
 
-    public static MatchId from(MatchId partnerNumber) {
-        return new MatchId(partnerNumber.value());
+    public static MatchId from(MatchId matchId) {
+        return new MatchId(matchId.value());
     }
 
     public long value() {

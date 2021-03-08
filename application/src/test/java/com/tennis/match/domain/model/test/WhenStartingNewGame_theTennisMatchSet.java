@@ -52,7 +52,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
     }
 
     @Test
-    void shouldMakeNewlyCreatedGameAsInProgress(){
+    void shouldMakeNewlyCreatedGameAsCurrent(){
 
         Game createdMockGame = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1)));
         try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
