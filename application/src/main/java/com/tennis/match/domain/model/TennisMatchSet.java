@@ -51,11 +51,11 @@ public class TennisMatchSet {
         }
     }
 
-    void addToGamesWonBy(PlayerNumber playerNumber, Game game) {
+    public void addToGamesWonBy(PlayerNumber playerNumber, Game game) {
         getGamesWonByPlayers().get(playerNumber).add(game);
     }
 
-    void awardSetTo(PlayerNumber playerNumber){
+    public void awardSetTo(PlayerNumber playerNumber){
         setWinner(playerNumber);
     }
 

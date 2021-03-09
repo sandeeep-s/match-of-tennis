@@ -14,8 +14,6 @@ import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 @Setter(AccessLevel.PRIVATE)
 public class TieBreaker extends Game {
 
-    private GameId gameId;
-    private TennisMatchSet parentSet;
     private Map<PlayerNumber, Integer> tbScores;
 
     public static TieBreaker from(GameId gameId, TennisMatchSet set) {
@@ -25,8 +23,8 @@ public class TieBreaker extends Game {
     public void scorePointFor(PlayerNumber playerNumber) {
         getTbScores().put(playerNumber, tbScoreOf(playerNumber) + 1);
 
-        if (tbScoreOf(playerNumber) >= 6 && (tbScoreOf(playerNumber) - tbScoreOf(playerNumber.oppositePlayerNumber()) == 2)) {
-            parentSet.awardSetTo(playerNumber);
+        if (tbScoreOf(playerNumber) >= 6 && (tbScoreOf(playerNumber) - tbScoreOf(playerNumber.oppositePlayerNumber()) >= 2)) {
+            parentSet().awardSetTo(playerNumber);
         }
     }
 
