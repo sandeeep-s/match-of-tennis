@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,46 +27,87 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
     @Test
     void shouldAskSetToAddGameToGamesAlreadyWonByThePlayer(){
 
-        PlayerNumber playerNumber = PLAYER_ONE;
+        PlayerNumber playerNumberOne = PLAYER_ONE;
         Game gameWon = Game.from(GameId.from(1), mockTennisMatchSet);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
+        gameWon.scorePointFor(playerNumberOne);
+        gameWon.scorePointFor(playerNumberOne);
+        gameWon.scorePointFor(playerNumberOne);
+        gameWon.scorePointFor(playerNumberOne);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumber, gameWon);
+        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, gameWon);
 
-        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumber, gameWon);
+        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumberOne, gameWon);
     }
 
     @Test
     void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFourOrLower(){
 
-        PlayerNumber playerNumber = PLAYER_ONE;
+        PlayerNumber playerNumberOne = PLAYER_ONE;
         TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
         tennisMatchSet.startNewGame();
-        winCurrentGame(playerNumber, tennisMatchSet);
-        winCurrentGame(playerNumber, tennisMatchSet);
-        winCurrentGame(playerNumber, tennisMatchSet);
-        winCurrentGame(playerNumber, tennisMatchSet);
-        winCurrentGame(playerNumber, tennisMatchSet);
+        for (int i = 1; i <= 5; i++){
+            winCurrentGame(playerNumberOne, tennisMatchSet);
+        }
         Game game = tennisMatchSet.currentGame();
-        game.scorePointFor(playerNumber);
-        game.scorePointFor(playerNumber);
-        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumber, game);
+        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
 
-        assertThat(tennisMatchSet.winner()).isEqualTo(playerNumber);
-
+        assertThat(tennisMatchSet.winner()).isEqualTo(playerNumberOne);
     }
 
-    private void winCurrentGame(PlayerNumber playerNumber, TennisMatchSet tennisMatchSet) {
+    @Test
+    void shouldStartNewGame_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFive(){
+
+        PlayerNumber playerNumberOne = PLAYER_ONE;
+        PlayerNumber playerNumberTwo = PLAYER_TWO;
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
+        tennisMatchSet.startNewGame();
+        for (int i = 1; i <= 5; i++){
+            winCurrentGame(playerNumberOne, tennisMatchSet);
+            winCurrentGame(playerNumberTwo, tennisMatchSet);
+        }
         Game game = tennisMatchSet.currentGame();
-        game.scorePointFor(playerNumber);
-        game.scorePointFor(playerNumber);
-        game.scorePointFor(playerNumber);
-        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+
+        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
+
+        assertThat(tennisMatchSet.currentGame().gameId().value()).isEqualTo(12);
+        assertThat(tennisMatchSet.winner()).isNull();
+    }
+
+    @Test
+    void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSeven(){
+
+        PlayerNumber playerNumberOne = PLAYER_ONE;
+        PlayerNumber playerNumberTwo = PLAYER_TWO;
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
+        for (int i = 1; i <= 5; i++){
+            winCurrentGame(playerNumberOne, tennisMatchSet);
+            winCurrentGame(playerNumberTwo, tennisMatchSet);
+        }
+
+        winCurrentGame(playerNumberOne, tennisMatchSet);
+        Game game = tennisMatchSet.currentGame();
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+
+        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
+
+        assertThat(tennisMatchSet.winner()).isEqualTo(playerNumberOne);
+    }
+
+    private void winCurrentGame(PlayerNumber playerNumberOne, TennisMatchSet tennisMatchSet) {
+        Game game = tennisMatchSet.currentGame();
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
     }
 
 

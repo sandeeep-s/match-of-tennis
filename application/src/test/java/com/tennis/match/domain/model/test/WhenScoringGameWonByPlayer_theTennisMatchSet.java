@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -53,7 +54,6 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
 
         PlayerNumber playerNumber = PLAYER_ONE;
         setUnderTest = TennisMatchSet.from(SetId.from(1));
-        setUnderTest.startNewGame();
         Game game = setUnderTest.currentGame();
         game.scorePointFor(playerNumber);
         game.scorePointFor(playerNumber);
@@ -64,6 +64,36 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
         setUnderTest.scoreGameWonBy(playerNumber, game);
 
         assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(2);
+    }
+
+    @Test
+    void shouldStartTieBreaker_given_bothPlayerReachesSetScoreOfSix(){
+
+        PlayerNumber playerNumberOne = PLAYER_ONE;
+        PlayerNumber playerNumberTwo = PLAYER_TWO;
+        setUnderTest = TennisMatchSet.from(SetId.from(1));
+        for (int i = 1; i <= 5; i++){
+            winCurrentGame(playerNumberOne, setUnderTest);
+        }
+        for (int i = 1; i <= 6; i++){
+            winCurrentGame(playerNumberTwo, setUnderTest);
+        }
+        Game game = setUnderTest.currentGame();
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+
+        setUnderTest.scoreGameWonBy(playerNumberOne, game);
+
+        assertThat(setUnderTest.currentGame()).isInstanceOf(TieBreaker.class);
+    }
+
+    private void winCurrentGame(PlayerNumber playerNumberOne, TennisMatchSet tennisMatchSet) {
+        Game game = tennisMatchSet.currentGame();
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(playerNumberOne);
     }
 
 

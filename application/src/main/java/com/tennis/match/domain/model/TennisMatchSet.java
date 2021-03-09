@@ -31,20 +31,31 @@ public class TennisMatchSet {
         setCurrentGame(game);
     }
 
+    private void startTieBreaker() {
+        TieBreaker tieBreaker = TieBreaker.from(newGameId(), this);
+        games.add(tieBreaker);
+        setCurrentGame(tieBreaker);
+    }
+
     public int scoreOf(PlayerNumber playerNumber){
         return getGamesWonByPlayers().get(playerNumber).size();
     }
 
     public void scoreGameWonBy(PlayerNumber playerNumber, Game game){
         scoringRules.scoreGameFor(playerNumber, game);
-        startNewGame();
+
+        if (scoringRules.isSetTied(this)){
+            startTieBreaker();
+        }else{
+            startNewGame();
+        }
     }
 
     void addToGamesWonBy(PlayerNumber playerNumber, Game game) {
         getGamesWonByPlayers().get(playerNumber).add(game);
     }
 
-    void makeWinner(PlayerNumber playerNumber){
+    void awardSetTo(PlayerNumber playerNumber){
         setWinner(playerNumber);
     }
 
@@ -89,6 +100,10 @@ public class TennisMatchSet {
 
     protected void setScoringRules(SetScoringRules scoringRules) {
         this.scoringRules = scoringRules;
+    }
+
+    public void setGamesWonByPlayers(Map<PlayerNumber, List<Game>> gamesWonByPlayers) {
+        this.gamesWonByPlayers = gamesWonByPlayers;
     }
 
     private List<Game> getGames() {

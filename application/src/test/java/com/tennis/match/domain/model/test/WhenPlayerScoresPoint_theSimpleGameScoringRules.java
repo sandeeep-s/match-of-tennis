@@ -77,7 +77,6 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
         game.scorePointFor(PLAYER_ONE);
         game.scorePointFor(PLAYER_ONE);
         game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
 
         Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE));
