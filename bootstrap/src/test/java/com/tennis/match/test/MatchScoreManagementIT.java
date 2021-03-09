@@ -70,7 +70,7 @@ public class MatchScoreManagementIT {
         Player agassi = Player.from(PLAYER_TWO, "Agassi");
         Match match = matchScoreManagerAPI.startMatch(sampras, agassi, THREE);
 
-        PlayerNumber playerNumber = PlayerNumber.PLAYER_ONE;
+        PlayerNumber playerNumber = PLAYER_ONE;
         for (int i = 1; i <= 6; i++) {
             winCurrentGame(match.matchId(),playerNumber);
         }
@@ -82,6 +82,7 @@ public class MatchScoreManagementIT {
         }
 
         assertThat(match.sets()).extracting(TennisMatchSet::winner).doesNotContainNull();
+        assertThat(match.winner()).isEqualTo(PLAYER_ONE);
     }
 
     private void winCurrentGame(MatchId matchId, PlayerNumber playerNumber) {

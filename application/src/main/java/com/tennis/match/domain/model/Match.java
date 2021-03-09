@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tennis.match.domain.model.MatchStatus.COMPLETED;
 import static com.tennis.match.domain.model.MatchStatus.IN_PROGRESS;
@@ -22,13 +25,25 @@ public class Match {
     private SetId currentSetId;
     private ScoreCard scoreCard;
     private MatchStatus matchStatus;
+    private PlayerNumber winner;
 
     public void startNewSet() {
-        if(currentSetId.value() < sets.size()){
+        if (currentSetId.value() < sets.size()) {
             currentSetId = sets.get(currentSetId.value()).setId();
-        }else{
+        } else {
+            setWinner(identifyWinner());
             setMatchStatus(COMPLETED);
         }
+    }
+
+    private PlayerNumber identifyWinner() {
+        return sets.stream().map(TennisMatchSet::winner)
+                .collect(Collectors.groupingBy(playerNumber -> playerNumber, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Comparator.comparing(Map.Entry::getValue))
+                .orElseThrow(() -> new IllegalStateException("Winner could not be identified even after match completed"))
+                .getKey();
     }
 
     protected Match(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
@@ -54,14 +69,13 @@ public class Match {
     }
 
     public void scorePoint(PlayerNumber playerNumber) {
-        if (matchStatus == COMPLETED){
+        if (matchStatus == COMPLETED) {
             throw new IllegalStateException("Points cannot be scored on completed match");
         }
         currentSet().currentGame().scorePointFor(playerNumber);
     }
 
     public TennisMatchSet currentSet() {
-        System.out.println("getCurrentSetId().value()="+getCurrentSetId().value());
         return getSets().get(getCurrentSetId().value() - 1);
     }
 
@@ -83,6 +97,10 @@ public class Match {
 
     public ScoreCard scoreCard() {
         return getScoreCard();
+    }
+
+    public PlayerNumber winner() {
+        return getWinner();
     }
 
     private void setPlayerOne(Player playerOne) {
