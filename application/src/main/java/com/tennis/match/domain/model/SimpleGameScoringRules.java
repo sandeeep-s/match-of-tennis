@@ -18,7 +18,7 @@ public class SimpleGameScoringRules implements GameScoringRules {
         }
 
         if (newScore == GAME) {
-            game.partOfSet().scoreGameWonBy(playerNumber, game);
+            game.parentSet().scoreGameWonBy(playerNumber, game);
         }
 
     }

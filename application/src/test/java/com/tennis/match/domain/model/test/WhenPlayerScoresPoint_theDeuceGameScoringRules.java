@@ -75,7 +75,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
         deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(GAME);
-        assertThat(game.partOfSet().scoreOf(PLAYER_TWO)).isEqualTo(1);
+        assertThat(game.parentSet().scoreOf(PLAYER_TWO)).isEqualTo(1);
     }
 
 

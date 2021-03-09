@@ -19,15 +19,14 @@ public class TennisMatchSet {
     private Game currentGame;
     private Map<PlayerNumber, List<Game>> gamesWonByPlayers;
     private SetScoringRules scoringRules;
+    private PlayerNumber winner;
 
     public static TennisMatchSet from(SetId setId) {
         return new TennisMatchSet(setId);
     }
 
     public void startNewGame() {
-        GameId newGameId = newGameId();
-        System.out.println("newGameId="+newGameId);
-        Game game = Game.from(newGameId, this);
+        Game game = Game.from(newGameId(), this);
         games.add(game);
         setCurrentGame(game);
     }
@@ -45,6 +44,10 @@ public class TennisMatchSet {
         getGamesWonByPlayers().get(playerNumber).add(game);
     }
 
+    void makeWinner(PlayerNumber playerNumber){
+        setWinner(playerNumber);
+    }
+
     public SetId setId() {
         return getSetId();
     }
@@ -58,7 +61,6 @@ public class TennisMatchSet {
     }
 
     private GameId newGameId() {
-        System.out.println("getGames().size()="+getGames().size());
         return GameId.from(getGames().size() + 1);
     }
 
@@ -70,6 +72,7 @@ public class TennisMatchSet {
                         PLAYER_TWO, new ArrayList<>())
         ));
         setScoringRules(new SetScoringRules());
+        startNewGame();
     }
 
     private void setSetId(SetId setId) {
@@ -90,5 +93,9 @@ public class TennisMatchSet {
 
     private List<Game> getGames() {
         return games != null ? games : new ArrayList<>();
+    }
+
+    public PlayerNumber winner() {
+        return getWinner();
     }
 }

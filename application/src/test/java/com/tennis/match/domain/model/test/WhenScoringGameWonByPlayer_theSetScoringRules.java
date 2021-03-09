@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -42,15 +43,29 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
 
         PlayerNumber playerNumber = PLAYER_ONE;
         TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
-        Game gameWon = Game.from(GameId.from(1), tennisMatchSet);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
+        tennisMatchSet.startNewGame();
+        winCurrentGame(playerNumber, tennisMatchSet);
+        winCurrentGame(playerNumber, tennisMatchSet);
+        winCurrentGame(playerNumber, tennisMatchSet);
+        winCurrentGame(playerNumber, tennisMatchSet);
+        winCurrentGame(playerNumber, tennisMatchSet);
+        Game game = tennisMatchSet.currentGame();
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumber, gameWon);
+        setScoringRulesUnderTest.scoreGameFor(playerNumber, game);
 
-        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumber, gameWon);
+        assertThat(tennisMatchSet.winner()).isEqualTo(playerNumber);
+
+    }
+
+    private void winCurrentGame(PlayerNumber playerNumber, TennisMatchSet tennisMatchSet) {
+        Game game = tennisMatchSet.currentGame();
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
     }
 
 

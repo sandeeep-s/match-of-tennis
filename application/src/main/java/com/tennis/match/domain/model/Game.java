@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.tennis.match.domain.model.Points.GAME;
 import static com.tennis.match.domain.model.Points.LOVE;
 
 @Getter(AccessLevel.PRIVATE)
@@ -15,7 +14,7 @@ import static com.tennis.match.domain.model.Points.LOVE;
 public class Game {
 
     private GameId gameId;
-    private TennisMatchSet partOfSet;
+    private TennisMatchSet parentSet;
     private Map<PlayerNumber, GameScore> scores;
     private GameScoringRules gameScoringRules;
 
@@ -35,8 +34,8 @@ public class Game {
         return getGameId();
     }
 
-    public TennisMatchSet partOfSet() {
-        return getPartOfSet();
+    public TennisMatchSet parentSet() {
+        return getParentSet();
     }
 
     public GameScoringRules gameRules() {
@@ -53,7 +52,7 @@ public class Game {
 
     protected Game(GameId gameId, TennisMatchSet set) {
         setGameId(gameId);
-        setPartOfSet(set);
+        setParentSet(set);
         setScores(new HashMap<>(
                 Map.of(PlayerNumber.PLAYER_ONE, GameScore.of(LOVE),
                         PlayerNumber.PLAYER_TWO, GameScore.of(LOVE))));
@@ -64,8 +63,8 @@ public class Game {
         this.gameId = gameId;
     }
 
-    private void setPartOfSet(TennisMatchSet set) {
-        this.partOfSet = set;
+    private void setParentSet(TennisMatchSet set) {
+        this.parentSet = set;
     }
 
     public void setScores(Map<PlayerNumber, GameScore> scores) {

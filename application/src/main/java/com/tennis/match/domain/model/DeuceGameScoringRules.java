@@ -17,7 +17,7 @@ public class DeuceGameScoringRules implements GameScoringRules {
         }
 
         if (game.scoreOf(playerNumber) == GAME){
-            game.partOfSet().scoreGameWonBy(playerNumber, game);
+            game.parentSet().scoreGameWonBy(playerNumber, game);
         }
     }
 

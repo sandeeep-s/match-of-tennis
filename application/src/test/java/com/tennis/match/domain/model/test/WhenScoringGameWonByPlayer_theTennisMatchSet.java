@@ -64,7 +64,6 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
         setUnderTest.scoreGameWonBy(playerNumber, game);
 
         assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(2);
-
     }
 
 

@@ -114,7 +114,7 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
         simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
 
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
-        assertThat(game.partOfSet().scoreOf(PLAYER_ONE)).isEqualTo(1);
+        assertThat(game.parentSet().scoreOf(PLAYER_ONE)).isEqualTo(1);
     }
 
 }
