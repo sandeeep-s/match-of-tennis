@@ -41,21 +41,4 @@ public class WhenPlayerScoresPoint_theGame {
         verify(mockGameScoringRules, times(1)).scorePoint(game, PLAYER_ONE);
     }
 
-    @Test
-    void shouldUpdateSetScore_given_playerWinsTheGame() {
-
-        GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
-        Game game = Game.from(gameId, set);
-        assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
-
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PLAYER_ONE);
-
-        assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
-        assertThat(set.scoreOf(PLAYER_ONE)).isEqualTo(1);
-    }
-
 }

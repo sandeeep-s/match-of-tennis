@@ -42,6 +42,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
     @Test
     void shouldChangeScoreOfServerToGame_given_serverHasAdvantage() {
 
+        assertThat(game.isDeuce()).isTrue();
         game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(ADVANTAGE);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(FORTY);
@@ -54,6 +55,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
     @Test
     void shouldChangeScoreOfReceiverToForty_given_receiverHasAdvantage() {
 
+        assertThat(game.isDeuce()).isTrue();
         game.scorePointFor(PlayerNumber.PLAYER_TWO);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(ADVANTAGE);
 
@@ -61,6 +63,19 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
 
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(FORTY);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(FORTY);
+    }
+
+    @Test
+    void shouldUpdateSetScore_given_playerWinsTheGame() {
+
+        assertThat(game.isDeuce()).isTrue();
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(ADVANTAGE);
+
+        deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
+
+        assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(GAME);
+        assertThat(game.partOfSet().scoreOf(PLAYER_TWO)).isEqualTo(1);
     }
 
 

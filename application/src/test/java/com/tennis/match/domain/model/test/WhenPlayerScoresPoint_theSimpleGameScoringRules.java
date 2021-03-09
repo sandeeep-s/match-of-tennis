@@ -89,17 +89,32 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
     void shouldActivateDeuceRule_given_bothPlayersReachScoreForty() {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
 
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PlayerNumber.PLAYER_TWO);
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PlayerNumber.PLAYER_TWO);
-        game.scorePointFor(PLAYER_ONE);
-        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_TWO);
 
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(FORTY);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(FORTY);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
+    }
+
+    @Test
+    void shouldUpdateSetScore_given_playerWinsTheGame() {
+
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+
+        simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
+
+        assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
+        assertThat(game.partOfSet().scoreOf(PLAYER_ONE)).isEqualTo(1);
     }
 
 }

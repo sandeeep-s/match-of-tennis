@@ -3,6 +3,7 @@ package com.tennis.match.domain.model;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.ADVANTAGE;
+import static com.tennis.match.domain.model.Points.GAME;
 
 public class DeuceGameScoringRules implements GameScoringRules {
 
@@ -13,6 +14,10 @@ public class DeuceGameScoringRules implements GameScoringRules {
             game.updateScoreOf(oppositePlayerNumber, game.scoreOf(oppositePlayerNumber).prevPoint());
         }else{
             game.updateScoreOf(playerNumber, game.scoreOf(playerNumber).nextPoint());
+        }
+
+        if (game.scoreOf(playerNumber) == GAME){
+            game.partOfSet().scoreGameWonBy(playerNumber, game);
         }
     }
 
