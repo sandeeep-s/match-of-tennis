@@ -1,8 +1,6 @@
 package com.tennis.match.domain.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,8 +12,13 @@ import static com.tennis.match.domain.model.Points.LOVE;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class Game {
 
+    @EqualsAndHashCode.Include
     private GameId gameId;
     private TennisMatchSet parentSet;
     private Map<PlayerNumber, Points> scores;
@@ -23,6 +26,10 @@ public class Game {
 
     public static Game from(GameId gameId, TennisMatchSet set) {
         return new Game(gameId, set);
+    }
+
+    public static Game from(Game game){
+        return new Game(game.gameId, game.parentSet, game.scores, game.gameScoringRules);
     }
 
     public void scorePointFor(PlayerNumber playerNumber) {
@@ -49,16 +56,12 @@ public class Game {
         return getScores().get(playerNumber);
     }
 
-    public Map<PlayerNumber, Points> scores() {
-        return scores;
-    }
-
-    public Map<PlayerNumber, Points> getScores() {
-        return scores != null? scores : Collections.emptyMap();
+    private Map<PlayerNumber, Points> getScores() {
+        return Collections.unmodifiableMap(scores);
     }
 
     void updateScoreOf(PlayerNumber playerNumber, Points points) {
-        getScores().put(playerNumber, points);
+        scores.put(playerNumber, points);
     }
 
     protected Game(GameId gameId, TennisMatchSet set) {
@@ -72,18 +75,30 @@ public class Game {
     }
 
     private void setGameId(GameId gameId) {
+        if (null == gameId){
+            throw new IllegalArgumentException("GameId is required");
+        }
         this.gameId = gameId;
     }
 
     private void setParentSet(TennisMatchSet set) {
+        if (null == set){
+            throw new IllegalArgumentException("Set is required");
+        }
         this.parentSet = set;
     }
 
-    public void setScores(Map<PlayerNumber, Points> scores) {
+    private void setScores(Map<PlayerNumber, Points> scores) {
+        if (null == scores){
+            throw new IllegalArgumentException("Scores are required");
+        }
         this.scores = scores;
     }
 
     protected void setGameScoringRules(GameScoringRules gameScoringRules) {
+        if (null == gameScoringRules){
+            throw new IllegalArgumentException("GameScoringRules are required");
+        }
         this.gameScoringRules = gameScoringRules;
     }
 

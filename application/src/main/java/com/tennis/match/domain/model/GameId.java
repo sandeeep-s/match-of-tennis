@@ -21,17 +21,17 @@ public class GameId implements Serializable {
 
     private void setValue(int aValue) {
         if (aValue <= 0) {
-            throw new IllegalArgumentException(String.format("%s is not a valid match id", aValue));
+            throw new IllegalArgumentException(String.format("%s is not a valid game id", aValue));
         }
         this.value = aValue;
     }
 
-    public static GameId from(int partnerNumber) {
-        return new GameId(partnerNumber);
+    public static GameId from(int gameId) {
+        return new GameId(gameId);
     }
 
-    public static GameId from(GameId partnerNumber) {
-        return new GameId(partnerNumber.value());
+    public static GameId from(GameId gameId) {
+        return new GameId(gameId.value());
     }
 
     public int value() {
