@@ -61,6 +61,7 @@ public class Match {
     }
 
     public TennisMatchSet currentSet() {
+        System.out.println("getCurrentSetId().value()="+getCurrentSetId().value());
         return getSets().get(getCurrentSetId().value() - 1);
     }
 

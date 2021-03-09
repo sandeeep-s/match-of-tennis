@@ -17,8 +17,6 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
     private MatchRepository mockMatchRepository;
     @Mock
     private Match mockMatch;
-    @Mock
-    private Game mockGame;
 
     @BeforeEach
     void setUp() {
@@ -31,7 +29,6 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
-        when(mockMatch.currentGame()).thenReturn(mockGame);
 
         matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
@@ -39,27 +36,14 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
     }
 
     @Test
-    void shouldFetchCurrentGameOfTheMatch(){
+    void shouldAskMatchToScorePoint(){
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
-        when(mockMatch.currentGame()).thenReturn(mockGame);
 
         matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
-        verify(mockMatch, times(1)).currentGame();
-    }
-
-    @Test
-    void shouldAskGameToScorePoint(){
-
-        MatchId matchId = MatchId.from(1);
-        when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
-        when(mockMatch.currentGame()).thenReturn(mockGame);
-
-        matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
-
-        verify(mockGame, times(1)).scorePointFor(PLAYER_ONE);
+        verify(mockMatch, times(1)).scorePoint(PLAYER_ONE);
     }
 
 }
