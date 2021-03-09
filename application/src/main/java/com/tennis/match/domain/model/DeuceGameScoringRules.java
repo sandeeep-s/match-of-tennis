@@ -9,7 +9,7 @@ public class DeuceGameScoringRules implements GameScoringRules {
 
     @Override
     public void scorePoint(Game game, PlayerNumber playerNumber) {
-        PlayerNumber oppositePlayerNumber = playerNumber.oppositePlayerNumber();
+        PlayerNumber oppositePlayerNumber = playerNumber.opponent();
         if(game.scoreOf(oppositePlayerNumber) == ADVANTAGE){
             game.updateScoreOf(oppositePlayerNumber, game.scoreOf(oppositePlayerNumber).prevPoint());
         }else{

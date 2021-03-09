@@ -18,8 +18,8 @@ public class MatchScoreManagerApi {
         return matchApplicationService.startNewMatch(playerOne, playerTwo, numberOfSets);
     }
 
-    public Match awardPointToPlayer(MatchId matchId, PlayerNumber playerNumber ){
-        return null;
+    public void awardPointToPlayer(MatchId matchId, PlayerNumber playerNumber ){
+         matchApplicationService.scorePoint(matchId, playerNumber);
     }
 
 }

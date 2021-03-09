@@ -4,9 +4,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.LOVE;
 
 @Getter(AccessLevel.PRIVATE)
@@ -15,7 +18,7 @@ public class Game {
 
     private GameId gameId;
     private TennisMatchSet parentSet;
-    private Map<PlayerNumber, GameScore> scores;
+    private Map<PlayerNumber, Points> scores;
     private GameScoringRules gameScoringRules;
 
     public static Game from(GameId gameId, TennisMatchSet set) {
@@ -43,19 +46,28 @@ public class Game {
     }
 
     public Points scoreOf(PlayerNumber playerNumber){
-        return getScores().get(playerNumber).points();
+        return getScores().get(playerNumber);
+    }
+
+    public Map<PlayerNumber, Points> scores() {
+        return scores;
+    }
+
+    public Map<PlayerNumber, Points> getScores() {
+        return scores != null? scores : Collections.emptyMap();
     }
 
     void updateScoreOf(PlayerNumber playerNumber, Points points) {
-        getScores().put(playerNumber, GameScore.of(points));
+        getScores().put(playerNumber, points);
     }
 
     protected Game(GameId gameId, TennisMatchSet set) {
         setGameId(gameId);
         setParentSet(set);
-        setScores(new HashMap<>(
-                Map.of(PlayerNumber.PLAYER_ONE, GameScore.of(LOVE),
-                        PlayerNumber.PLAYER_TWO, GameScore.of(LOVE))));
+        Map<PlayerNumber, Points> scoresMap = new HashMap<>();
+        scores.put(PLAYER_ONE, LOVE);
+        scores.put(PLAYER_TWO, LOVE);
+        setScores(scoresMap);
         setGameScoringRules(new SimpleGameScoringRules());
     }
 
@@ -67,7 +79,7 @@ public class Game {
         this.parentSet = set;
     }
 
-    public void setScores(Map<PlayerNumber, GameScore> scores) {
+    public void setScores(Map<PlayerNumber, Points> scores) {
         this.scores = scores;
     }
 

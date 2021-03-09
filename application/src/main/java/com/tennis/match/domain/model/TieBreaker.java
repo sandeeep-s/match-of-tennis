@@ -23,7 +23,7 @@ public class TieBreaker extends Game {
     public void scorePointFor(PlayerNumber playerNumber) {
         getTbScores().put(playerNumber, tbScoreOf(playerNumber) + 1);
 
-        if (tbScoreOf(playerNumber) >= 6 && (tbScoreOf(playerNumber) - tbScoreOf(playerNumber.oppositePlayerNumber()) >= 2)) {
+        if (tbScoreOf(playerNumber) >= 6 && (tbScoreOf(playerNumber) - tbScoreOf(playerNumber.opponent()) >= 2)) {
             parentSet().awardSetTo(playerNumber);
         }
     }

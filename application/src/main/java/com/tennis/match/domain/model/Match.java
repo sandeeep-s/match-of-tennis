@@ -1,7 +1,6 @@
 package com.tennis.match.domain.model;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,19 +16,7 @@ public class Match {
     private Player playerTwo;
     private List<TennisMatchSet> sets;
     private TennisMatchSet currentSet;
-
-    public void startNewSet() {
-        currentSet = TennisMatchSet.from(newSetId());
-        sets.add(currentSet);
-    }
-
-    private SetId newSetId() {
-        return SetId.from(1);
-    }
-
-    public void startNewGame() {
-        currentSet().startNewGame();
-    }
+    private ScoreCard scoreCard;
 
     protected Match(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
         setMatchId(matchId);
@@ -41,6 +28,7 @@ public class Match {
         }
         setSets(sets);
         setCurrentSet(getSets().get(0));
+        setScoreCard(new ScoreCard(this));
     }
 
     public static Match from(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
@@ -69,6 +57,10 @@ public class Match {
 
     public List<TennisMatchSet> sets() {
         return getSets();
+    }
+
+    public ScoreCard scoreCard() {
+        return getScoreCard();
     }
 
     private void setPlayerOne(Player playerOne) {

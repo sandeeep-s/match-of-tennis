@@ -9,7 +9,7 @@ public class SetScoringRules{
         game.parentSet().addToGamesWonBy(playerNumber, game);
 
         if (game.parentSet().scoreOf(playerNumber) == 6) {
-            if (game.parentSet().scoreOf(playerNumber.oppositePlayerNumber()) <= 4) {
+            if (game.parentSet().scoreOf(playerNumber.opponent()) <= 4) {
                 game.parentSet().awardSetTo(playerNumber);
             }
         }

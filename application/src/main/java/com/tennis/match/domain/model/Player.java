@@ -10,7 +10,6 @@ public class Player {
 
     private PlayerNumber playerNumber;
     private String name;
-    private PlayerScore playerScore;
 
     public static Player from(PlayerNumber playerNumber, String name) {
         return new Player(playerNumber, name);

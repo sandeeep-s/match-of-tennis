@@ -12,6 +12,9 @@ import java.util.Map;
 
 import static com.tennis.match.domain.model.Match.NoOfSets.THREE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
+import static com.tennis.match.domain.model.Points.FIFTEEN;
+import static com.tennis.match.domain.model.Points.LOVE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MatchScoreManagementIT {
@@ -30,7 +33,7 @@ public class MatchScoreManagementIT {
     }
 
     @Test
-    void shouldStartMatch_and_storeItInRepository(){
+    void shouldStartMatch_and_storeItInRepository() {
 
         Player sampras = Player.from(PLAYER_ONE, "Sampras");
         Player agassi = Player.from(PLAYER_ONE, "Agassi");
@@ -45,6 +48,19 @@ public class MatchScoreManagementIT {
         assertThat(match.playerTwo().playerNumber()).isEqualTo(PLAYER_ONE);
 
         assertThat(matchStore.size()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldCorrectlyMaintainScore() {
+
+        Player sampras = Player.from(PLAYER_ONE, "Sampras");
+        Player agassi = Player.from(PLAYER_TWO, "Agassi");
+
+        Match match = matchScoreManagerAPI.startMatch(sampras, agassi, THREE);
+        matchScoreManagerAPI.awardPointToPlayer(match.matchId(), sampras.playerNumber());
+
+        assertThat(match.scoreCard().currentGameScoreOf(agassi.playerNumber())).isEqualTo(LOVE);
+        assertThat(match.scoreCard().currentGameScoreOf(sampras.playerNumber())).isEqualTo(FIFTEEN);
     }
 
 }

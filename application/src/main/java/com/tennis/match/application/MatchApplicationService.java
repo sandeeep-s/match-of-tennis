@@ -17,20 +17,10 @@ public class MatchApplicationService {
         return match;
     }
 
-    public void startNewGameOfMatchWith(MatchId matchId) {
-        Match match = matchRepository.matchWith(matchId);
-        match.startNewGame();
-    }
-
     public void scorePoint(MatchId matchId, PlayerNumber playerNumber) {
         Match match = matchRepository.matchWith(matchId);
         Game game = match.currentGame();
         game.scorePointFor(playerNumber);
-    }
-
-    public void startNewSetOfMatchWith(MatchId matchId) {
-        Match match = matchRepository.matchWith(matchId);
-        match.startNewSet();
     }
 
 }
