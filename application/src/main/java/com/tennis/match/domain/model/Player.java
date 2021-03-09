@@ -21,6 +21,14 @@ public class Player {
         setName(name);
     }
 
+    public PlayerNumber playerNumber() {
+        return getPlayerNumber();
+    }
+
+    public String name() {
+        return getName();
+    }
+
     private void setPlayerNumber(PlayerNumber playerNumber) {
         this.playerNumber = playerNumber;
     }

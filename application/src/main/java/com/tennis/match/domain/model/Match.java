@@ -18,8 +18,33 @@ public class Match {
     private List<TennisMatchSet> sets;
     private TennisMatchSet currentSet;
 
+    public void startNewSet() {
+        currentSet = TennisMatchSet.from(newSetId());
+        sets.add(currentSet);
+    }
+
+    private SetId newSetId() {
+        return SetId.from(1);
+    }
+
     public void startNewGame() {
         currentSet().startNewGame();
+    }
+
+    protected Match(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
+        setMatchId(matchId);
+        setPlayerOne(playerOne);
+        setPlayerTwo(playerTwo);
+        List<TennisMatchSet> sets = new ArrayList<>();
+        for (int i = 1; i <= numberOfSets.numericValue; i++) {
+            sets.add(TennisMatchSet.from(SetId.from(i)));
+        }
+        setSets(sets);
+        setCurrentSet(getSets().get(0));
+    }
+
+    public static Match from(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
+        return new Match(matchId, playerOne, playerTwo, numberOfSets);
     }
 
     public Game currentGame() {
@@ -30,43 +55,50 @@ public class Match {
         return getCurrentSet();
     }
 
-    public void startNewSet() {
-        currentSet = TennisMatchSet.from(newSetId());
-        sets.add(currentSet);
+    public MatchId matchId() {
+        return getMatchId();
     }
 
-    private SetId newSetId() {
-        return SetId.from(1);
+    public Player playerOne() {
+        return getPlayerOne();
     }
 
-    protected Match(MatchId matchId, Player playerOne, Player playerTwo, int numberOfSets) {
-        setMatchId(matchId);
-        setPlayerOne(playerOne);
-        setPlayerTwo(playerTwo);
-        List<TennisMatchSet> sets = new ArrayList<>();
-        for (int i = 1; i <= numberOfSets;i++){
-            sets.add(TennisMatchSet.from(SetId.from(i)));
-        }
-        setSets(sets);
-        setCurrentSet(getSets().get(0));
+    public Player playerTwo() {
+        return getPlayerTwo();
     }
 
-    public static Match from(MatchId matchId, Player playerOne, Player playerTwo, int numberOfSets) {
-        return new Match(matchId, playerOne, playerTwo, numberOfSets);
+    public List<TennisMatchSet> sets() {
+        return getSets();
     }
-        public void setPlayerOne(Player playerOne) {
+
+    private void setPlayerOne(Player playerOne) {
         this.playerOne = playerOne;
     }
 
-    public void setPlayerTwo(Player playerTwo) {
+    private void setPlayerTwo(Player playerTwo) {
         this.playerTwo = playerTwo;
     }
 
-    public void setSets(List<TennisMatchSet> sets) {
+    private void setSets(List<TennisMatchSet> sets) {
         this.sets = sets;
     }
 
-    public void setCurrentSet(TennisMatchSet currentSet) {
+    private void setCurrentSet(TennisMatchSet currentSet) {
         this.currentSet = currentSet;
     }
+
+    public enum NoOfSets {
+        THREE(3), FIVE(5);
+
+        private int numericValue;
+
+        NoOfSets(int numericValue) {
+            this.numericValue = numericValue;
+        }
+
+        public int numericValue() {
+            return numericValue;
+        }
+    }
+
 }

@@ -10,8 +10,11 @@ public class MatchApplicationService {
         this.matchRepository = matchRepository;
     }
 
-    public void startNewMatch(MatchId matchId, Player playerOne, Player playerTwo, int noOfSets) {
-        Match match = Match.from(matchId, playerOne, playerTwo, noOfSets);
+    public Match startNewMatch(Player playerOne, Player playerTwo, Match.NoOfSets numberOfSets) {
+        MatchId matchId = matchRepository.nextMatchId();
+        Match match = Match.from(matchId, playerOne, playerTwo, numberOfSets);
+        matchRepository.store(match);
+        return match;
     }
 
     public void startNewGameOfMatchWith(MatchId matchId) {

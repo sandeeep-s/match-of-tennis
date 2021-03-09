@@ -27,7 +27,7 @@ public class WhenStartingNewMatch_theMatchApplicationService {
     @Captor
     private ArgumentCaptor<Player> playerTwoArgumentCaptor;
     @Captor
-    private ArgumentCaptor<Integer> noOfSetsArgumentCaptor;
+    private ArgumentCaptor<Match.NoOfSets> noOfSetsArgumentCaptor;
     @Captor
     private ArgumentCaptor<Match> matchArgumentCaptor;
 
@@ -40,14 +40,13 @@ public class WhenStartingNewMatch_theMatchApplicationService {
     @Test
     void shouldCreateNewMatch() {
 
-        MatchId matchId = MatchId.from(1);
         Player playerOne = Player.from(PLAYER_ONE, "Federer");
         Player playerTwo = Player.from(PLAYER_TWO, "NADAL");
-        int noOfSets = 3;
-        try (MockedStatic<Match> gameMockedStatic = Mockito.mockStatic(Match.class)) {
-            gameMockedStatic.when(() -> Match.from(any(MatchId.class), any(Player.class), any(Player.class), anyInt())).thenReturn(mockMatch);
 
-            matchApplicationServiceUnderTest.startNewMatch(matchId, playerOne, playerTwo, noOfSets);
+        try (MockedStatic<Match> gameMockedStatic = Mockito.mockStatic(Match.class)) {
+            gameMockedStatic.when(() -> Match.from(any(MatchId.class), any(Player.class), any(Player.class), any(Match.NoOfSets.class))).thenReturn(mockMatch);
+
+            matchApplicationServiceUnderTest.startNewMatch(playerOne, playerTwo, Match.NoOfSets.THREE);
 
             gameMockedStatic.verify(() ->
                     Match.from(
@@ -61,14 +60,12 @@ public class WhenStartingNewMatch_theMatchApplicationService {
     @Test
     void shouldStoreCreatedMatchToMatchRepository() {
 
-        MatchId matchId = MatchId.from(1);
         Player playerOne = Player.from(PLAYER_ONE, "Federer");
         Player playerTwo = Player.from(PLAYER_TWO, "NADAL");
-        int noOfSets = 3;
         try (MockedStatic<Match> gameMockedStatic = Mockito.mockStatic(Match.class)) {
-            gameMockedStatic.when(() -> Match.from(any(MatchId.class), any(Player.class), any(Player.class), anyInt())).thenReturn(mockMatch);
+            gameMockedStatic.when(() -> Match.from(any(MatchId.class), any(Player.class), any(Player.class), any(Match.NoOfSets.class))).thenReturn(mockMatch);
 
-            matchApplicationServiceUnderTest.startNewMatch(matchId, playerOne, playerTwo, noOfSets);
+            matchApplicationServiceUnderTest.startNewMatch(playerOne, playerTwo, Match.NoOfSets.THREE);
 
             mockMatchRepository.store(matchArgumentCaptor.capture());
         }
