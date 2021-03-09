@@ -20,12 +20,12 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
         GameId gameId = GameId.from(1);
         TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
         game = Game.from(gameId, set);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
         assertThat(game.gameRules()).isInstanceOf(DeuceGameScoringRules.class);
     }
 
@@ -42,7 +42,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
     @Test
     void shouldChangeScoreOfServerToGame_given_serverHasAdvantage() {
 
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(ADVANTAGE);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(FORTY);
 
@@ -54,7 +54,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
     @Test
     void shouldChangeScoreOfReceiverToForty_given_receiverHasAdvantage() {
 
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(ADVANTAGE);
 
         deuceGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);

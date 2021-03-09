@@ -37,7 +37,7 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToThirty_given_currentScoreWasFifteen() {
 
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(FIFTEEN);
 
         simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
@@ -48,8 +48,8 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
     @Test
     void shouldChangeScoreToForty_given_currentScoreWasThirty() {
 
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(THIRTY);
 
         simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
@@ -60,9 +60,9 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
     @Test
     void shouldGame_given_currentScoreWasForty_and_deuceRuleWasNotActivated() {
 
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(FORTY);
 
         simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE);
@@ -73,11 +73,11 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
     @Test
     void shouldFailWithError_given_gameIsAlreadyWon() {
 
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
 
         Throwable thrown = catchThrowable(() -> simpleGameScoringRulesUnderTest.scorePoint(game, PLAYER_ONE));
@@ -90,12 +90,12 @@ public class WhenPlayerScoresPoint_theSimpleGameScoringRules {
 
         assertThat(game.gameRules()).isInstanceOf(SimpleGameScoringRules.class);
 
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PlayerNumber.PLAYER_TWO);
 
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(FORTY);
         assertThat(game.scoreOf(PLAYER_TWO)).isEqualTo(FORTY);

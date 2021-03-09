@@ -36,7 +36,7 @@ public class WhenPlayerScoresPoint_theGame {
         Game game = new TestableGame(gameId, set, mockGameScoringRules);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
 
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
 
         verify(mockGameScoringRules, times(1)).scorePoint(game, PLAYER_ONE);
     }
@@ -49,10 +49,10 @@ public class WhenPlayerScoresPoint_theGame {
         Game game = Game.from(gameId, set);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
 
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
-        game.scorePoint(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
 
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(GAME);
         assertThat(set.scoreOf(PLAYER_ONE)).isEqualTo(1);

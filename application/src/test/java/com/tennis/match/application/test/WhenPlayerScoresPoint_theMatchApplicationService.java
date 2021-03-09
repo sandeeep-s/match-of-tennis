@@ -59,7 +59,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
 
         matchApplicationServiceUnderTest.scorePoint(matchId, PLAYER_ONE);
 
-        verify(mockGame, times(1)).scorePoint(PLAYER_ONE);
+        verify(mockGame, times(1)).scorePointFor(PLAYER_ONE);
     }
 
 }

@@ -23,7 +23,7 @@ public class Game {
         return new Game(gameId, set);
     }
 
-    public void scorePoint(PlayerNumber playerNumber) {
+    public void scorePointFor(PlayerNumber playerNumber) {
         gameScoringRules.scorePoint(this, playerNumber);
     }
 
@@ -47,11 +47,8 @@ public class Game {
         return getScores().get(playerNumber).points();
     }
 
-    public void updateScoreOf(PlayerNumber playerNumber, Points points) {
+    void updateScoreOf(PlayerNumber playerNumber, Points points) {
         getScores().put(playerNumber, GameScore.of(points));
-        if(points == GAME){
-            partOfSet().gameWonBy(playerNumber, this);
-        }
     }
 
     protected Game(GameId gameId, TennisMatchSet set) {

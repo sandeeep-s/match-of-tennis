@@ -22,7 +22,7 @@ public class MatchApplicationService {
     public void scorePoint(MatchId matchId, PlayerNumber playerNumber) {
         Match match = matchRepository.matchWith(matchId);
         Game game = match.currentGame();
-        game.scorePoint(playerNumber);
+        game.scorePointFor(playerNumber);
     }
 
     public void startNewSetOfMatchWith(MatchId matchId) {

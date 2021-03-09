@@ -18,6 +18,7 @@ public class TennisMatchSet {
     private List<Game> games;
     private Game currentGame;
     private Map<PlayerNumber, List<Game>> gamesWonByPlayers;
+    private SetScoringRules scoringRules;
 
     public static TennisMatchSet from(SetId setId) {
         return new TennisMatchSet(setId);
@@ -33,7 +34,8 @@ public class TennisMatchSet {
         return getGamesWonByPlayers().get(playerNumber).size();
     }
 
-    void gameWonBy(PlayerNumber playerNumber, Game game){
+    public void scoreGameWonBy(PlayerNumber playerNumber, Game game){
+        scoringRules.scoreGame(game, this);
         getGamesWonByPlayers().get(playerNumber).add(game);
     }
 
@@ -53,13 +55,14 @@ public class TennisMatchSet {
         return GameId.from(getGames().size() + 1);
     }
 
-    private TennisMatchSet(SetId setId) {
+    protected TennisMatchSet(SetId setId) {
         setSetId(setId);
         setGames(new ArrayList<>());
         setGamesWonByPlayers(new HashMap<>(
                 Map.of(PLAYER_ONE, new ArrayList<>(),
                         PLAYER_TWO, new ArrayList<>())
         ));
+        setScoringRules(new SetScoringRules());
     }
 
     private void setSetId(SetId setId) {
@@ -72,6 +75,10 @@ public class TennisMatchSet {
 
     private void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
+    }
+
+    protected void setScoringRules(SetScoringRules scoringRules) {
+        this.scoringRules = scoringRules;
     }
 
     private List<Game> getGames() {
