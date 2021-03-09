@@ -23,5 +23,4 @@ public class SetScoringRules{
         return set.scoreOf(PLAYER_ONE) == 6 && set.scoreOf(PLAYER_TWO) == 6;
     }
 
-
 }

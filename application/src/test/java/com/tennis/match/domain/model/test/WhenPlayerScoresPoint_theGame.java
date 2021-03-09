@@ -14,6 +14,9 @@ import static org.mockito.MockitoAnnotations.openMocks;
 public class WhenPlayerScoresPoint_theGame {
 
     @Mock
+    private Match mockMatch;
+
+    @Mock
     private GameScoringRules mockGameScoringRules;
 
     @BeforeEach
@@ -32,7 +35,7 @@ public class WhenPlayerScoresPoint_theGame {
     void shouldAskGameScoringRulesToScorePoint() {
 
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1), mockMatch);
         Game game = new TestableGame(gameId, set, mockGameScoringRules);
         assertThat(game.scoreOf(PLAYER_ONE)).isEqualTo(LOVE);
 

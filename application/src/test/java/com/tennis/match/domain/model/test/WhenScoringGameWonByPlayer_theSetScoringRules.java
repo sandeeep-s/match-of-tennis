@@ -17,6 +17,8 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
     private SetScoringRules setScoringRulesUnderTest;
     @Mock
     private TennisMatchSet mockTennisMatchSet;
+    @Mock
+    private Match mockMatch;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +45,7 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
     void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFourOrLower(){
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
-        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
         tennisMatchSet.startNewGame();
         for (int i = 1; i <= 5; i++){
             winCurrentGame(playerNumberOne, tennisMatchSet);
@@ -63,7 +65,7 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
         PlayerNumber playerNumberTwo = PLAYER_TWO;
-        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
         tennisMatchSet.startNewGame();
         for (int i = 1; i <= 5; i++){
             winCurrentGame(playerNumberOne, tennisMatchSet);
@@ -85,7 +87,7 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
         PlayerNumber playerNumberTwo = PLAYER_TWO;
-        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
         for (int i = 1; i <= 5; i++){
             winCurrentGame(playerNumberOne, tennisMatchSet);
             winCurrentGame(playerNumberTwo, tennisMatchSet);

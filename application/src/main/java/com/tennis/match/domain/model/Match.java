@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tennis.match.domain.model.MatchStatus.COMPLETED;
+import static com.tennis.match.domain.model.MatchStatus.IN_PROGRESS;
+
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
 public class Match {
@@ -16,7 +19,17 @@ public class Match {
     private Player playerTwo;
     private List<TennisMatchSet> sets;
     private TennisMatchSet currentSet;
+    private SetId currentSetId;
     private ScoreCard scoreCard;
+    private MatchStatus matchStatus;
+
+    public void startNewSet() {
+        if(currentSetId.value() < sets.size()){
+            currentSetId = sets.get(currentSetId.value()).setId();
+        }else{
+            setMatchStatus(COMPLETED);
+        }
+    }
 
     protected Match(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
         setMatchId(matchId);
@@ -24,11 +37,12 @@ public class Match {
         setPlayerTwo(playerTwo);
         List<TennisMatchSet> sets = new ArrayList<>();
         for (int i = 1; i <= numberOfSets.numericValue; i++) {
-            sets.add(TennisMatchSet.from(SetId.from(i)));
+            sets.add(TennisMatchSet.from(SetId.from(i), this));
         }
         setSets(sets);
-        setCurrentSet(getSets().get(0));
+        setCurrentSetId(sets.get(0).setId());
         setScoreCard(new ScoreCard(this));
+        setMatchStatus(IN_PROGRESS);
     }
 
     public static Match from(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
@@ -39,8 +53,15 @@ public class Match {
         return currentSet().currentGame();
     }
 
+    public void scorePoint(PlayerNumber playerNumber) {
+        if (matchStatus == COMPLETED){
+            throw new IllegalStateException("Points cannot be scored on completed match");
+        }
+        currentSet().currentGame().scorePointFor(playerNumber);
+    }
+
     public TennisMatchSet currentSet() {
-        return getCurrentSet();
+        return getSets().get(getCurrentSetId().value() - 1);
     }
 
     public MatchId matchId() {

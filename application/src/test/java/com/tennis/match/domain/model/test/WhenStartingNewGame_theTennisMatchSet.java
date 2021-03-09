@@ -7,7 +7,6 @@ import org.mockito.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenStartingNewGame_theTennisMatchSet {
@@ -19,12 +18,13 @@ public class WhenStartingNewGame_theTennisMatchSet {
     private ArgumentCaptor<GameId>  gameIdArgumentCaptor;
     @Captor
     private ArgumentCaptor<TennisMatchSet>  setArgumentCaptor;
-    private
+    @Mock
+    private Match mockMatch;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
-        setUnderTest = TennisMatchSet.from(SetId.from(1));;
+        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);;
     }
 
     @Test
@@ -42,7 +42,7 @@ public class WhenStartingNewGame_theTennisMatchSet {
     @Test
     void shouldMakeNewlyCreatedGameAsCurrent(){
 
-        Game createdMockGame = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1)));
+        Game createdMockGame = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1), mockMatch));
         try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
             gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(createdMockGame);
 

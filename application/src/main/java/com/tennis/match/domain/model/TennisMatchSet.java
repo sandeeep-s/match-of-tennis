@@ -15,14 +15,15 @@ import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 public class TennisMatchSet {
 
     private SetId setId;
+    private Match match;
     private List<Game> games;
     private Game currentGame;
     private Map<PlayerNumber, List<Game>> gamesWonByPlayers;
     private SetScoringRules scoringRules;
     private PlayerNumber winner;
 
-    public static TennisMatchSet from(SetId setId) {
-        return new TennisMatchSet(setId);
+    public static TennisMatchSet from(SetId setId, Match match) {
+        return new TennisMatchSet(setId, match);
     }
 
     public void startNewGame() {
@@ -46,7 +47,8 @@ public class TennisMatchSet {
 
         if (scoringRules.isSetTied(this)){
             startTieBreaker();
-        }else{
+        }
+        else{
             startNewGame();
         }
     }
@@ -57,6 +59,7 @@ public class TennisMatchSet {
 
     public void awardSetTo(PlayerNumber playerNumber){
         setWinner(playerNumber);
+        match.startNewSet();
     }
 
     public SetId setId() {
@@ -71,11 +74,19 @@ public class TennisMatchSet {
         return getCurrentGame();
     }
 
+    public Match match() {
+        return getMatch();
+    }
+
+    public Map<PlayerNumber, List<Game>> gamesWonByPlayers() {
+        return getGamesWonByPlayers();
+    }
+
     private GameId newGameId() {
         return GameId.from(getGames().size() + 1);
     }
 
-    protected TennisMatchSet(SetId setId) {
+    protected TennisMatchSet(SetId setId, Match match) {
         setSetId(setId);
         setGames(new ArrayList<>());
         setGamesWonByPlayers(new HashMap<>(
@@ -83,6 +94,7 @@ public class TennisMatchSet {
                         PLAYER_TWO, new ArrayList<>())
         ));
         setScoringRules(new SetScoringRules());
+        setMatch(match);
         startNewGame();
     }
 

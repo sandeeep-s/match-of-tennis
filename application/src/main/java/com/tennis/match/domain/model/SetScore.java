@@ -15,6 +15,16 @@ public class SetScore implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private SetId setId;
-    private List<Game> gamesWon;
+    private Integer gamesWon;
+
+
+    public SetScore(SetId setId, Integer gamesWon) {
+        setSetId(setId);
+        setGamesWon(gamesWon);
+    }
+
+    public static SetScore from(SetId setId, Integer gamesWon) {
+        return new SetScore(setId, gamesWon);
+    }
 
 }

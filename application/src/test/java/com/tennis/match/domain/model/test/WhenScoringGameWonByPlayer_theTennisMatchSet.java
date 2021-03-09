@@ -17,17 +17,19 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
 
     private TennisMatchSet setUnderTest;
     @Mock
+    private Match mockMatch;
+    @Mock
     private SetScoringRules mockSetScoringRules;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
-        setUnderTest = TennisMatchSet.from(SetId.from(1));
+        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);
     }
 
     private class TestableTennisMatchSet extends TennisMatchSet {
         public TestableTennisMatchSet(SetId setId) {
-            super(setId);
+            super(setId, mockMatch);
             setScoringRules(mockSetScoringRules);
         }
     }
@@ -36,7 +38,7 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
     void shouldAskSetScoringRulesToScoreWonGame(){
 
         PlayerNumber playerNumber = PLAYER_ONE;
-        Game gameWon = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1)));
+        Game gameWon = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1), mockMatch));
         gameWon.scorePointFor(playerNumber);
         gameWon.scorePointFor(playerNumber);
         gameWon.scorePointFor(playerNumber);
@@ -53,7 +55,7 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
     void shouldStartNewGame(){
 
         PlayerNumber playerNumber = PLAYER_ONE;
-        setUnderTest = TennisMatchSet.from(SetId.from(1));
+        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);
         Game game = setUnderTest.currentGame();
         game.scorePointFor(playerNumber);
         game.scorePointFor(playerNumber);
@@ -71,7 +73,8 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
         PlayerNumber playerNumberTwo = PLAYER_TWO;
-        setUnderTest = TennisMatchSet.from(SetId.from(1));
+
+        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);
         for (int i = 1; i <= 5; i++){
             winCurrentGame(playerNumberOne, setUnderTest);
         }

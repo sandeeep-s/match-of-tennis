@@ -2,6 +2,7 @@ package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
@@ -10,11 +11,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class WhenNewGameStarts_theGame {
 
+    @Mock
+    private Match mockMatch;
+
     @Test
     void shouldStartWithScoreOfZeroPointForEachPlayer() {
 
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1), mockMatch);
 
         Game game = Game.from(gameId, set);
 
@@ -26,7 +30,7 @@ public class WhenNewGameStarts_theGame {
     void shouldActivateSimpleGameRules() {
 
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1), mockMatch);
 
         Game game = Game.from(gameId, set);
 

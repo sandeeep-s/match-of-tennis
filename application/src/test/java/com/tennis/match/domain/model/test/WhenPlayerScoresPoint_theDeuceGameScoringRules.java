@@ -3,6 +3,7 @@ package com.tennis.match.domain.model.test;
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
@@ -11,6 +12,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
 
+    @Mock
+    private Match mockMatch;
+
     private DeuceGameScoringRules deuceGameScoringRulesUnderTest;
     private Game game;
 
@@ -18,7 +22,7 @@ public class WhenPlayerScoresPoint_theDeuceGameScoringRules {
     void setUp() {
         deuceGameScoringRulesUnderTest = new DeuceGameScoringRules();
         GameId gameId = GameId.from(1);
-        TennisMatchSet set = TennisMatchSet.from(SetId.from(1));
+        TennisMatchSet set = TennisMatchSet.from(SetId.from(1), mockMatch);
         game = Game.from(gameId, set);
         game.scorePointFor(PLAYER_ONE);
         game.scorePointFor(PLAYER_ONE);

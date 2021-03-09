@@ -19,8 +19,7 @@ public class MatchApplicationService {
 
     public void scorePoint(MatchId matchId, PlayerNumber playerNumber) {
         Match match = matchRepository.matchWith(matchId);
-        Game game = match.currentGame();
-        game.scorePointFor(playerNumber);
+        match.scorePoint(playerNumber);
     }
 
 }

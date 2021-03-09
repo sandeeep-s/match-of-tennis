@@ -65,8 +65,8 @@ public class Game {
         setGameId(gameId);
         setParentSet(set);
         Map<PlayerNumber, Points> scoresMap = new HashMap<>();
-        scores.put(PLAYER_ONE, LOVE);
-        scores.put(PLAYER_TWO, LOVE);
+        scoresMap.put(PLAYER_ONE, LOVE);
+        scoresMap.put(PLAYER_TWO, LOVE);
         setScores(scoresMap);
         setGameScoringRules(new SimpleGameScoringRules());
     }
