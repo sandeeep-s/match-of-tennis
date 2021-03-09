@@ -15,7 +15,7 @@ import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.FIFTEEN;
 import static com.tennis.match.domain.model.Points.LOVE;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MatchScoreManagementIT {
 
@@ -55,12 +55,40 @@ public class MatchScoreManagementIT {
 
         Player sampras = Player.from(PLAYER_ONE, "Sampras");
         Player agassi = Player.from(PLAYER_TWO, "Agassi");
-
         Match match = matchScoreManagerAPI.startMatch(sampras, agassi, THREE);
+
         matchScoreManagerAPI.awardPointToPlayer(match.matchId(), sampras.playerNumber());
 
         assertThat(match.scoreCard().currentGameScoreOf(agassi.playerNumber())).isEqualTo(LOVE);
         assertThat(match.scoreCard().currentGameScoreOf(sampras.playerNumber())).isEqualTo(FIFTEEN);
+    }
+
+    @Test
+    void shouldEndSetsInWinner() {
+
+        Player sampras = Player.from(PLAYER_ONE, "Sampras");
+        Player agassi = Player.from(PLAYER_TWO, "Agassi");
+        Match match = matchScoreManagerAPI.startMatch(sampras, agassi, THREE);
+
+        PlayerNumber playerNumber = PlayerNumber.PLAYER_ONE;
+        for (int i = 1; i <= 6; i++) {
+            winCurrentGame(match.matchId(),playerNumber);
+        }
+        for (int i = 1; i <= 6; i++) {
+            winCurrentGame(match.matchId(),playerNumber);
+        }
+        for (int i = 1; i <= 6; i++) {
+            winCurrentGame(match.matchId(),playerNumber);
+        }
+
+        assertThat(match.sets()).extracting(TennisMatchSet::winner).doesNotContainNull();
+    }
+
+    private void winCurrentGame(MatchId matchId, PlayerNumber playerNumber) {
+        matchScoreManagerAPI.awardPointToPlayer(matchId, playerNumber);
+        matchScoreManagerAPI.awardPointToPlayer(matchId, playerNumber);
+        matchScoreManagerAPI.awardPointToPlayer(matchId, playerNumber);
+        matchScoreManagerAPI.awardPointToPlayer(matchId, playerNumber);
     }
 
 }
