@@ -25,7 +25,9 @@ public class TennisMatchSet {
     }
 
     public void startNewGame() {
-        Game game = Game.from(newGameId(), this);
+        GameId newGameId = newGameId();
+        System.out.println("newGameId="+newGameId);
+        Game game = Game.from(newGameId, this);
         games.add(game);
         setCurrentGame(game);
     }
@@ -35,7 +37,11 @@ public class TennisMatchSet {
     }
 
     public void scoreGameWonBy(PlayerNumber playerNumber, Game game){
-        scoringRules.scoreGame(game, this);
+        scoringRules.scoreGameFor(playerNumber, game);
+        startNewGame();
+    }
+
+    void addToGamesWonBy(PlayerNumber playerNumber, Game game) {
         getGamesWonByPlayers().get(playerNumber).add(game);
     }
 
@@ -52,6 +58,7 @@ public class TennisMatchSet {
     }
 
     private GameId newGameId() {
+        System.out.println("getGames().size()="+getGames().size());
         return GameId.from(getGames().size() + 1);
     }
 

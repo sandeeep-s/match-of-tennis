@@ -2,7 +2,7 @@ package com.tennis.match.domain.model;
 
 public class SetScoringRules {
 
-    public void scoreGame(Game game, TennisMatchSet set) {
-
+    public void scoreGameFor(PlayerNumber playerNumber, Game game) {
+        game.partOfSet().addToGamesWonBy(playerNumber, game);
     }
 }

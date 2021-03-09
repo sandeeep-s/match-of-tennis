@@ -40,11 +40,32 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
         gameWon.scorePointFor(playerNumber);
         gameWon.scorePointFor(playerNumber);
         gameWon.scorePointFor(playerNumber);
+
         setUnderTest = new TestableTennisMatchSet(SetId.from(1));
 
         setUnderTest.scoreGameWonBy(playerNumber, gameWon);
 
-        verify(mockSetScoringRules, times(1)).scoreGame(gameWon, setUnderTest);
+        verify(mockSetScoringRules, times(1)).scoreGameFor(playerNumber, gameWon);
     }
+
+    @Test
+    void shouldStartNewGame(){
+
+        PlayerNumber playerNumber = PLAYER_ONE;
+        setUnderTest = TennisMatchSet.from(SetId.from(1));
+        setUnderTest.startNewGame();
+        Game game = setUnderTest.currentGame();
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
+        game.scorePointFor(playerNumber);
+        assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(1);
+        assertThat(setUnderTest.games().size()).isEqualTo(1);
+
+        setUnderTest.scoreGameWonBy(playerNumber, game);
+
+        assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(2);
+
+    }
+
 
 }
