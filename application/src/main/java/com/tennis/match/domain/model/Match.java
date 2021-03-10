@@ -3,7 +3,6 @@ package com.tennis.match.domain.model;
 import lombok.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.tennis.match.domain.model.MatchStatus.COMPLETED;
 import static com.tennis.match.domain.model.MatchStatus.IN_PROGRESS;
@@ -23,11 +22,18 @@ public class Match {
     private List<TennisMatchSet> sets;
     private SetId currentSetId;
     private ScoreCard scoreCard;
-    private MatchStatus matchStatus;
+    private MatchStatus status;
     private PlayerNumber winner;
 
     public static Match from(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
         return new Match(matchId, playerOne, playerTwo, numberOfSets);
+    }
+
+    public void scorePoint(PlayerNumber playerNumber) {
+        if (status() == COMPLETED) {
+            throw new IllegalStateException("Points cannot be scored on completed match");
+        }
+        currentSet().scorePointFor(playerNumber);
     }
 
     public void startNewSet() {
@@ -35,29 +41,16 @@ public class Match {
             currentSetId = sets.get(currentSetId.value()).setId();
         } else {
             setWinner(identifyWinner());
-            setMatchStatus(COMPLETED);
+            setStatus(COMPLETED);
         }
     }
 
     private PlayerNumber identifyWinner() {
-        return sets.stream().map(TennisMatchSet::winner)
-                .collect(Collectors.groupingBy(playerNumber -> playerNumber, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .max(Comparator.comparing(Map.Entry::getValue))
-                .orElseThrow(() -> new IllegalStateException("Winner could not be identified even after match completed"))
-                .getKey();
+        return null;
     }
 
     public Game currentGame() {
         return currentSet().currentGame();
-    }
-
-    public void scorePoint(PlayerNumber playerNumber) {
-        if (matchStatus == COMPLETED) {
-            throw new IllegalStateException("Points cannot be scored on completed match");
-        }
-        currentSet().currentGame().scorePointFor(playerNumber);
     }
 
     public TennisMatchSet currentSet() {
@@ -88,6 +81,10 @@ public class Match {
         return getWinner();
     }
 
+    public MatchStatus status() {
+        return getStatus();
+    }
+
     protected Match(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
         setMatchId(matchId);
         setPlayerOne(playerOne);
@@ -99,7 +96,7 @@ public class Match {
         setSets(sets);
         setCurrentSetId(sets.get(0).setId());
         setScoreCard(new ScoreCard(this));
-        setMatchStatus(IN_PROGRESS);
+        setStatus(IN_PROGRESS);
     }
 
     public List<TennisMatchSet> getSets() {
@@ -148,11 +145,11 @@ public class Match {
         this.scoreCard = scoreCard;
     }
 
-    private void setMatchStatus(MatchStatus matchStatus) {
-        if (null == matchStatus){
+    private void setStatus(MatchStatus status) {
+        if (null == status){
             throw new IllegalArgumentException("MatchStatus is required");
         }
-        this.matchStatus = matchStatus;
+        this.status = status;
     }
 
     private void setWinner(PlayerNumber winner) {

@@ -3,6 +3,10 @@ package com.tennis.match.domain.model.test;
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.Captor;
 import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
@@ -26,48 +30,52 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
         setScoringRulesUnderTest = new SetScoringRules();
     }
 
-    @Test
-    void shouldAskSetToAddGameToGamesAlreadyWonByThePlayer(){
+    @ParameterizedTest
+    @EnumSource(PlayerNumber.class)
+    void shouldAskSetToAddGameToGamesAlreadyWonByThePlayer(PlayerNumber playerNumber) {
 
-        PlayerNumber playerNumberOne = PLAYER_ONE;
+
         Game gameWon = Game.from(GameId.from(1), mockTennisMatchSet);
-        gameWon.scorePointFor(playerNumberOne);
-        gameWon.scorePointFor(playerNumberOne);
-        gameWon.scorePointFor(playerNumberOne);
-        gameWon.scorePointFor(playerNumberOne);
+        gameWon.scorePointFor(playerNumber);
+        gameWon.scorePointFor(playerNumber);
+        gameWon.scorePointFor(playerNumber);
+        gameWon.scorePointFor(playerNumber);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, gameWon);
+//        setScoringRulesUnderTest.scoreGameFor(playerNumber, gameWon);
 
-        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumberOne, gameWon);
+//        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumber, gameWon);
     }
 
     @Test
-    void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFourOrLower(){
+    @CsvSource({"6,0,PLAYER_ONE"})
+    void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFourOrLower(int gamesWonByPlayerOne, int gamesWonByPlayerTwo, PlayerNumber expectedWinner) {
 
-        PlayerNumber playerNumberOne = PLAYER_ONE;
         TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
         tennisMatchSet.startNewGame();
-        for (int i = 1; i <= 5; i++){
-            winCurrentGame(playerNumberOne, tennisMatchSet);
+        for (int i = 1; i <= gamesWonByPlayerOne; i++) {
+            winCurrentGame(PLAYER_ONE, tennisMatchSet);
+        }
+        for (int i = 1; i <= gamesWonByPlayerTwo; i++) {
+            winCurrentGame(PLAYER_TWO, tennisMatchSet);
         }
         Game game = tennisMatchSet.currentGame();
-        game.scorePointFor(playerNumberOne);
-        game.scorePointFor(playerNumberOne);
-        game.scorePointFor(playerNumberOne);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
+        game.scorePointFor(PLAYER_ONE);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
+//        setScoringRulesUnderTest.scoreGameFor(PLAYER_ONE, game);
 
-        assertThat(tennisMatchSet.winner()).isEqualTo(playerNumberOne);
+        assertThat(tennisMatchSet.winner()).isEqualTo(PLAYER_ONE);
     }
 
     @Test
-    void shouldStartNewGame_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFive(){
+    void shouldStartNewGame_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFive() {
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
         PlayerNumber playerNumberTwo = PLAYER_TWO;
         TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
         tennisMatchSet.startNewGame();
-        for (int i = 1; i <= 5; i++){
+        for (int i = 1; i <= 5; i++) {
             winCurrentGame(playerNumberOne, tennisMatchSet);
             winCurrentGame(playerNumberTwo, tennisMatchSet);
         }
@@ -76,19 +84,19 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
         game.scorePointFor(playerNumberOne);
         game.scorePointFor(playerNumberOne);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
+//        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
 
         assertThat(tennisMatchSet.currentGame().gameId().value()).isEqualTo(12);
         assertThat(tennisMatchSet.winner()).isNull();
     }
 
     @Test
-    void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSeven(){
+    void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSeven() {
 
         PlayerNumber playerNumberOne = PLAYER_ONE;
         PlayerNumber playerNumberTwo = PLAYER_TWO;
         TennisMatchSet tennisMatchSet = TennisMatchSet.from(SetId.from(1), mockMatch);
-        for (int i = 1; i <= 5; i++){
+        for (int i = 1; i <= 5; i++) {
             winCurrentGame(playerNumberOne, tennisMatchSet);
             winCurrentGame(playerNumberTwo, tennisMatchSet);
         }
@@ -99,7 +107,7 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
         game.scorePointFor(playerNumberOne);
         game.scorePointFor(playerNumberOne);
 
-        setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
+ //       setScoringRulesUnderTest.scoreGameFor(playerNumberOne, game);
 
         assertThat(tennisMatchSet.winner()).isEqualTo(playerNumberOne);
     }

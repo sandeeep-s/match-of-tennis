@@ -2,21 +2,18 @@ package com.tennis.match.domain.model;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
+import static com.tennis.match.domain.model.Points.GAME;
 
 public class SetScoringRules{
 
-    public void scoreGameFor(PlayerNumber playerNumber, Game game) {
-        game.parentSet().addToGamesWonBy(playerNumber, game);
+    public boolean hasWonSet(PlayerNumber playerNumber, TennisMatchSet tennisMatchSet) {
 
-        if (game.parentSet().scoreOf(playerNumber) == 6) {
-            if (game.parentSet().scoreOf(playerNumber.opponent()) <= 4) {
-                game.parentSet().awardSetTo(playerNumber);
-            }
-        }
+        return (tennisMatchSet.scoreOf(playerNumber) == 6 && tennisMatchSet.scoreOf(playerNumber.opponent()) <= 4)
+                || tennisMatchSet.scoreOf(playerNumber) == 7;
+    }
 
-        if (game.parentSet().scoreOf(playerNumber) == 7) {
-            game.parentSet().awardSetTo(playerNumber);
-        }
+    public boolean hasWonGame(PlayerNumber playerNumber, Game game) {
+        return game.scoreOf(playerNumber) == GAME;
     }
 
     public boolean isSetTied(TennisMatchSet set) {

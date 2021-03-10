@@ -8,22 +8,7 @@ import static com.tennis.match.domain.model.Points.GAME;
 public class SimpleGameScoringRules implements GameScoringRules {
 
     @Override
-    public void scorePoint(Game game, PlayerNumber playerNumber) {
-
-        Points newScore = calculateNewScore(game, playerNumber);
-        game.updateScoreOf(playerNumber, newScore);
-
-        if (isDeuce(game)) {
-            game.setGameScoringRules(new DeuceGameScoringRules());
-        }
-
-        if (newScore == GAME) {
-            game.parentSet().scoreGameWonBy(playerNumber, game);
-        }
-
-    }
-
-    private Points calculateNewScore(Game game, PlayerNumber playerNumber) {
+    public Points calculateNewScoreOf(PlayerNumber playerNumber, Game game) {
 
         Points updatedPoints = game.scoreOf(playerNumber).nextPoint();
 
@@ -32,6 +17,11 @@ public class SimpleGameScoringRules implements GameScoringRules {
         }
 
         return updatedPoints;
+    }
+
+    @Override
+    public Points calculateNewScoreOfOpponent(PlayerNumber playerNumber, Game game) {
+        return game.scoreOf(playerNumber.opponent());
     }
 
     @Override

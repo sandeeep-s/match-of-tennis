@@ -8,16 +8,22 @@ import static com.tennis.match.domain.model.Points.GAME;
 public class DeuceGameScoringRules implements GameScoringRules {
 
     @Override
-    public void scorePoint(Game game, PlayerNumber playerNumber) {
-        PlayerNumber oppositePlayerNumber = playerNumber.opponent();
-        if(game.scoreOf(oppositePlayerNumber) == ADVANTAGE){
-            game.updateScoreOf(oppositePlayerNumber, game.scoreOf(oppositePlayerNumber).prevPoint());
-        }else{
-            game.updateScoreOf(playerNumber, game.scoreOf(playerNumber).nextPoint());
+    public Points calculateNewScoreOf(PlayerNumber playerNumber, Game game) {
+        if(game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
+            return game.scoreOf(playerNumber);
         }
+        else{
+            return game.scoreOf(playerNumber).nextPoint();
+        }
+    }
 
-        if (game.scoreOf(playerNumber) == GAME){
-            game.parentSet().scoreGameWonBy(playerNumber, game);
+    @Override
+    public Points calculateNewScoreOfOpponent(PlayerNumber playerNumber, Game game) {
+        if(game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
+            return game.scoreOf(playerNumber.opponent()).prevPoint();
+        }
+        else{
+            return game.scoreOf(playerNumber.opponent());
         }
     }
 

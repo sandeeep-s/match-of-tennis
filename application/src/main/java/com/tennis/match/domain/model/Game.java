@@ -20,6 +20,7 @@ public class Game {
 
     @EqualsAndHashCode.Include
     private GameId gameId;
+    @EqualsAndHashCode.Include
     private TennisMatchSet parentSet;
     private Map<PlayerNumber, Points> scores;
     private GameScoringRules gameScoringRules;
@@ -33,7 +34,13 @@ public class Game {
     }
 
     public void scorePointFor(PlayerNumber playerNumber) {
-        gameScoringRules.scorePoint(this, playerNumber);
+        Points newScore  = gameScoringRules.calculateNewScoreOf(playerNumber,this);
+        updateScoreOf(playerNumber, newScore);
+        Points newScoreOfOpponent  = gameScoringRules.calculateNewScoreOfOpponent(playerNumber,this);
+        updateScoreOf(playerNumber.opponent(), newScoreOfOpponent);
+        if (gameScoringRules.isDeuce(this)) {
+            setGameScoringRules(new DeuceGameScoringRules());
+        }
     }
 
     public boolean isDeuce() {

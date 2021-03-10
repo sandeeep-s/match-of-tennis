@@ -46,9 +46,9 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
 
         setUnderTest = new TestableTennisMatchSet(SetId.from(1));
 
-        setUnderTest.scoreGameWonBy(playerNumber, gameWon);
+//        setUnderTest.scoreGameWonBy(playerNumber, gameWon);
 
-        verify(mockSetScoringRules, times(1)).scoreGameFor(playerNumber, gameWon);
+//        verify(mockSetScoringRules, times(1)).scoreGameFor(playerNumber, gameWon);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
         assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(1);
         assertThat(setUnderTest.games().size()).isEqualTo(1);
 
-        setUnderTest.scoreGameWonBy(playerNumber, game);
+//        setUnderTest.scoreGameWonBy(playerNumber, game);
 
         assertThat(setUnderTest.currentGame().gameId().value()).isEqualTo(2);
     }
@@ -86,7 +86,7 @@ public class WhenScoringGameWonByPlayer_theTennisMatchSet {
         game.scorePointFor(playerNumberOne);
         game.scorePointFor(playerNumberOne);
 
-        setUnderTest.scoreGameWonBy(playerNumberOne, game);
+//        setUnderTest.scoreGameWonBy(playerNumberOne, game);
 
         assertThat(setUnderTest.currentGame()).isInstanceOf(TieBreaker.class);
     }

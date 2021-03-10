@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class WhenPresentingScoreOfAllSets_theScorecard {
 
-    private ScoreCard scoreCardUnderTest;
     private Match match;
 
     @BeforeEach
@@ -20,8 +19,6 @@ public class WhenPresentingScoreOfAllSets_theScorecard {
         Player agassi = Player.from(PLAYER_TWO, "Agassi");
         MatchId matchId = MatchId.from(1);
         match = Match.from(matchId, sampras, agassi, THREE);
-
-        scoreCardUnderTest = new ScoreCard(match);
     }
 
     @Test
