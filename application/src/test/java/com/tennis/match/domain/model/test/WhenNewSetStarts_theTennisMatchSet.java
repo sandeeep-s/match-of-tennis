@@ -1,10 +1,10 @@
 package com.tennis.match.domain.model.test;
 
-import com.tennis.match.domain.model.*;
+import com.tennis.match.domain.model.Match;
+import com.tennis.match.domain.model.SetId;
+import com.tennis.match.domain.model.TennisMatchSet;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class WhenNewSetStarts_theTennisMatchSet {
 

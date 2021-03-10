@@ -1,7 +1,9 @@
 package com.tennis.match.application.test;
 
 import com.tennis.match.application.MatchApplicationService;
-import com.tennis.match.domain.model.*;
+import com.tennis.match.domain.model.Match;
+import com.tennis.match.domain.model.MatchId;
+import com.tennis.match.domain.model.MatchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

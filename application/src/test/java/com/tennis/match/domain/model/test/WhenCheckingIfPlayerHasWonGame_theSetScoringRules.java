@@ -2,17 +2,14 @@ package com.tennis.match.domain.model.test;
 
 import com.tennis.match.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.Captor;
 import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenCheckingIfPlayerHasWonGame_theSetScoringRules {

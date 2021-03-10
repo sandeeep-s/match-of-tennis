@@ -3,7 +3,6 @@ package com.tennis.match.domain.model;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)

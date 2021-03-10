@@ -7,7 +7,6 @@ import org.mockito.Mock;
 
 import static com.tennis.match.domain.model.Match.NoOfSets.THREE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
-import static com.tennis.match.domain.model.Points.LOVE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.Mockito.times;

@@ -8,7 +8,7 @@ import org.mockito.*;
 
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 public class WhenStartingNewMatch_theMatchApplicationService {

@@ -7,7 +7,6 @@ import com.tennis.match.domain.model.MatchRepository;
 import com.tennis.match.port.adapters.api.MatchScoreManagerApi;
 import com.tennis.match.port.adapters.services.InMemoryMatchRepository;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 

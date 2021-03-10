@@ -3,7 +3,6 @@ package com.tennis.match.domain.model;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.ADVANTAGE;
-import static com.tennis.match.domain.model.Points.GAME;
 
 public class DeuceGameScoringRules implements GameScoringRules {
 

@@ -2,7 +2,9 @@ package com.tennis.match.domain.model;
 
 import lombok.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.tennis.match.domain.model.MatchStatus.COMPLETED;
 import static com.tennis.match.domain.model.MatchStatus.IN_PROGRESS;
