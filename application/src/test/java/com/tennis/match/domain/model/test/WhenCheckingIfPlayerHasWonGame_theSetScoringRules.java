@@ -12,17 +12,16 @@ import org.mockito.Mock;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class WhenScoringGameWonByPlayer_theSetScoringRules {
+public class WhenCheckingIfPlayerHasWonGame_theSetScoringRules {
 
     private SetScoringRules setScoringRulesUnderTest;
     @Mock
     private TennisMatchSet mockTennisMatchSet;
     @Mock
-    private Match mockMatch;
+    private Game mockGame;
 
     @BeforeEach
     void setUp() {
@@ -31,21 +30,66 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
     }
 
     @ParameterizedTest
-    @EnumSource(PlayerNumber.class)
-    void shouldAskSetToAddGameToGamesAlreadyWonByThePlayer(PlayerNumber playerNumber) {
+    @CsvSource({
+            "PLAYER_ONE, 6, 0, true",
+            "PLAYER_ONE, 6, 1, true",
+            "PLAYER_ONE, 6, 2, true",
+            "PLAYER_ONE, 6, 3, true",
+            "PLAYER_ONE, 6, 4, true",
+            "PLAYER_ONE, 6, 5, false",
+            "PLAYER_ONE, 7, 5, true",
+            "PLAYER_TWO, 6, 0, true",
+            "PLAYER_TWO, 6, 1, true",
+            "PLAYER_TWO, 6, 2, true",
+            "PLAYER_TWO, 6, 3, true",
+            "PLAYER_TWO, 6, 4, true",
+            "PLAYER_TWO, 6, 5, false",
+            "PLAYER_TWO, 7, 5, true"
 
+    })
+    void shouldCheckIfPlayerHasWonTheSet(PlayerNumber playerNumber, int playerScore, int opponentScore, boolean expectedValue) {
 
-        Game gameWon = Game.from(GameId.from(1), mockTennisMatchSet);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
-        gameWon.scorePointFor(playerNumber);
+        when(mockTennisMatchSet.scoreOf(playerNumber)).thenReturn(playerScore);
+        when(mockTennisMatchSet.scoreOf(playerNumber.opponent())).thenReturn(opponentScore);
 
-//        setScoringRulesUnderTest.scoreGameFor(playerNumber, gameWon);
+        boolean hasWonSet = setScoringRulesUnderTest.hasWonSet(playerNumber, mockTennisMatchSet);
 
-//        verify(mockTennisMatchSet, times(1)).scoreGameWonBy(playerNumber, gameWon);
+        assertThat(hasWonSet).isEqualTo(expectedValue);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "PLAYER_ONE, GAME, true",
+            "PLAYER_TWO, GAME, true",
+            "PLAYER_ONE, FORTY, false",
+            "PLAYER_TWO, FORTY, false",
+            "PLAYER_ONE, ADVANTAGE, false",
+            "PLAYER_TWO, ADVANTAGE, false"
+    })
+    void shouldCheckIfPlayerHasWonTheGame(PlayerNumber playerNumber, Points score, boolean expectedValue) {
+
+        when(mockGame.scoreOf(playerNumber)).thenReturn(score);
+
+        boolean hasWonSet = setScoringRulesUnderTest.hasWonGame(playerNumber, mockGame);
+
+        assertThat(hasWonSet).isEqualTo(expectedValue);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "6, 6, true"
+    })
+    void shouldCheckIfSetIsTied(int playerOneScore, int playerTwoScore, boolean expectedValue) {
+
+        when(mockTennisMatchSet.scoreOf(PLAYER_ONE)).thenReturn(playerOneScore);
+        when(mockTennisMatchSet.scoreOf(PLAYER_TWO)).thenReturn(playerTwoScore);
+
+        boolean isSetTied = setScoringRulesUnderTest.isSetTied(mockTennisMatchSet);
+
+        assertThat(isSetTied).isEqualTo(expectedValue);
+    }
+
+/*
     @Test
     @CsvSource({"6,0,PLAYER_ONE"})
     void shouldAwardSetToPlayer_given_playerReachesSetScoreOfSix_and_oppositePlayerHasSetScoreOfFourOrLower(int gamesWonByPlayerOne, int gamesWonByPlayerTwo, PlayerNumber expectedWinner) {
@@ -119,6 +163,7 @@ public class WhenScoringGameWonByPlayer_theSetScoringRules {
         game.scorePointFor(playerNumberOne);
         game.scorePointFor(playerNumberOne);
     }
+*/
 
 
 }

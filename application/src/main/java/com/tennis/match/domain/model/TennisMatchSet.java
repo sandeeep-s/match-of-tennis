@@ -87,7 +87,6 @@ public class TennisMatchSet {
     }
 
     private GameId newGameId() {
-        System.out.println("getGames().size()=" + getGames().size());
         return GameId.from(getGames().size() + 1);
     }
 

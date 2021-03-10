@@ -32,10 +32,10 @@ public class WhenPresentingScoreOfCurrentGame_theScorecard {
         PlayerNumber playerNumber = PlayerNumber.PLAYER_ONE;
         match.currentGame().scorePointFor(playerNumber);
 
-        scoreCardUnderTest.currentGameScoreOf(playerNumber);
+        scoreCardUnderTest.scoreOForCurrentGameOf(playerNumber);
 
-        assertThat(match.scoreCard().currentGameScoreOf(playerNumber)).isEqualTo(FIFTEEN);
-        assertThat(match.scoreCard().currentGameScoreOf(playerNumber.opponent())).isEqualTo(LOVE);
+        assertThat(match.scoreCard().scoreOForCurrentGameOf(playerNumber)).isEqualTo(FIFTEEN);
+        assertThat(match.scoreCard().scoreOForCurrentGameOf(playerNumber.opponent())).isEqualTo(LOVE);
     }
 
 

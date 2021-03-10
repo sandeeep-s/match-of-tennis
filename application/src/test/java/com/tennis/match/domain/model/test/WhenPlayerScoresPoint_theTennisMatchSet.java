@@ -37,6 +37,7 @@ public class WhenPlayerScoresPoint_theTennisMatchSet {
         public TestableTennisMatchSet(SetId setId, Game game) {
             super(setId, mockMatch);
             setCurrentGame(game);
+            setScoringRules(mockSetScoringRules);
         }
 
         public TestableTennisMatchSet(SetId setId) {
@@ -50,7 +51,7 @@ public class WhenPlayerScoresPoint_theTennisMatchSet {
     @EnumSource(PlayerNumber.class)
     void shouldAskCurrentGameToScorePoint(PlayerNumber playerNumber) {
 
-        setUnderTest = new TestableTennisMatchSet(SetId.from(1));
+        setUnderTest = new TestableTennisMatchSet(SetId.from(1), mockGame);
 
         setUnderTest.scorePointFor(playerNumber);
 

@@ -6,6 +6,8 @@ import com.tennis.match.port.adapters.api.MatchScoreManagerApi;
 import com.tennis.match.port.adapters.services.InMemoryMatchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,30 +61,30 @@ public class MatchScoreManagementIT {
 
         matchScoreManagerAPI.awardPointToPlayer(match.matchId(), sampras.playerNumber());
 
-        assertThat(match.scoreCard().currentGameScoreOf(agassi.playerNumber())).isEqualTo(LOVE);
-        assertThat(match.scoreCard().currentGameScoreOf(sampras.playerNumber())).isEqualTo(FIFTEEN);
+        assertThat(match.scoreCard().scoreOForCurrentGameOf(agassi.playerNumber())).isEqualTo(LOVE);
+        assertThat(match.scoreCard().scoreOForCurrentGameOf(sampras.playerNumber())).isEqualTo(FIFTEEN);
     }
 
-    @Test
-    void shouldEndSetsInWinner() {
+    @ParameterizedTest
+    @EnumSource(PlayerNumber.class)
+    void shouldEndSetsInWinner(PlayerNumber playerNumber) {
 
-        Player sampras = Player.from(PLAYER_ONE, "Sampras");
-        Player agassi = Player.from(PLAYER_TWO, "Agassi");
+        Player sampras = Player.from(playerNumber, "Sampras");
+        Player agassi = Player.from(playerNumber.opponent(), "Agassi");
         Match match = matchScoreManagerAPI.startMatch(sampras, agassi, THREE);
 
-        PlayerNumber playerNumber = PLAYER_ONE;
         for (int i = 1; i <= 6; i++) {
-            winCurrentGame(match.matchId(),playerNumber);
+            winCurrentGame(match.matchId(), playerNumber);
         }
         for (int i = 1; i <= 6; i++) {
-            winCurrentGame(match.matchId(),playerNumber);
+            winCurrentGame(match.matchId(), playerNumber.opponent());
         }
         for (int i = 1; i <= 6; i++) {
-            winCurrentGame(match.matchId(),playerNumber);
+            winCurrentGame(match.matchId(), playerNumber);
         }
 
         assertThat(match.sets()).extracting(TennisMatchSet::winner).doesNotContainNull();
-        assertThat(match.winner()).isEqualTo(PLAYER_ONE);
+        assertThat(match.winner()).isEqualTo(playerNumber);
     }
 
     private void winCurrentGame(MatchId matchId, PlayerNumber playerNumber) {

@@ -17,12 +17,8 @@ public class ScoreCard {
         this.match = match;
     }
 
-    public Points currentGameScoreOf(PlayerNumber playerNumber) {
+    public Points scoreOForCurrentGameOf(PlayerNumber playerNumber) {
         return match.currentGame().scoreOf(playerNumber);
-    }
-
-    public int scoreForCurrentSetOf(PlayerNumber playerNumber) {
-        return match.currentSet().scoreOf(playerNumber);
     }
 
     public List<SetScore> scoreForAllSetsOf(PlayerNumber playerNumber) {

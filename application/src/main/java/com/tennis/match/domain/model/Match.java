@@ -6,6 +6,8 @@ import java.util.*;
 
 import static com.tennis.match.domain.model.MatchStatus.COMPLETED;
 import static com.tennis.match.domain.model.MatchStatus.IN_PROGRESS;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
+import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -46,7 +48,9 @@ public class Match {
     }
 
     private PlayerNumber identifyWinner() {
-        return null;
+        long setsWonByPlayerOne = sets().stream().filter(tennisMatchSet -> tennisMatchSet.winner() == PLAYER_ONE).count();
+        long setsWonByPlayerTwo = sets().stream().filter(tennisMatchSet -> tennisMatchSet.winner() == PLAYER_TWO).count();
+        return setsWonByPlayerOne > setsWonByPlayerTwo ? PLAYER_ONE:PLAYER_TWO;
     }
 
     public Game currentGame() {
