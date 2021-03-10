@@ -15,7 +15,7 @@ jar {
     }
 }
 
-shadowJar{
+shadowJar {
     archiveFileName = "match-of-tennis.jar"
 }
 

@@ -14,12 +14,12 @@ public class MatchScoreManagerApi {
         this.matchApplicationService = matchApplicationService;
     }
 
-    public Match startMatch(Player playerOne, Player playerTwo, Match.NoOfSets numberOfSets){
+    public Match startMatch(Player playerOne, Player playerTwo, Match.NoOfSets numberOfSets) {
         return matchApplicationService.startNewMatch(playerOne, playerTwo, numberOfSets);
     }
 
-    public void awardPointToPlayer(MatchId matchId, PlayerNumber playerNumber ){
-         matchApplicationService.scorePoint(matchId, playerNumber);
+    public void awardPointToPlayer(MatchId matchId, PlayerNumber playerNumber) {
+        matchApplicationService.scorePoint(matchId, playerNumber);
     }
 
 }

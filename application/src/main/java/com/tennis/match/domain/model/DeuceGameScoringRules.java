@@ -8,20 +8,18 @@ public class DeuceGameScoringRules implements GameScoringRules {
 
     @Override
     public Points calculateNewScoreOf(PlayerNumber playerNumber, Game game) {
-        if(game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
+        if (game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
             return game.scoreOf(playerNumber);
-        }
-        else{
+        } else {
             return game.scoreOf(playerNumber).nextPoint();
         }
     }
 
     @Override
     public Points calculateNewScoreOfOpponent(PlayerNumber playerNumber, Game game) {
-        if(game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
+        if (game.scoreOf(playerNumber.opponent()) == ADVANTAGE) {
             return game.scoreOf(playerNumber.opponent()).prevPoint();
-        }
-        else{
+        } else {
             return game.scoreOf(playerNumber.opponent());
         }
     }

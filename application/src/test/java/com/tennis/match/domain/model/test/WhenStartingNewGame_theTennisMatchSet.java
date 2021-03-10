@@ -15,35 +15,36 @@ public class WhenStartingNewGame_theTennisMatchSet {
     @Mock
     private Game mockGame;
     @Captor
-    private ArgumentCaptor<GameId>  gameIdArgumentCaptor;
+    private ArgumentCaptor<GameId> gameIdArgumentCaptor;
     @Captor
-    private ArgumentCaptor<TennisMatchSet>  setArgumentCaptor;
+    private ArgumentCaptor<TennisMatchSet> setArgumentCaptor;
     @Mock
     private Match mockMatch;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
-        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);;
+        setUnderTest = TennisMatchSet.from(SetId.from(1), mockMatch);
+        ;
     }
 
     @Test
-    void shouldCreateNewGame(){
+    void shouldCreateNewGame() {
 
-        try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
+        try (MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)) {
             gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(mockGame);
 
             setUnderTest.startNewGame();
 
-            gameMockedStatic.verify(() -> Game.from(gameIdArgumentCaptor.capture(),setArgumentCaptor.capture()));
+            gameMockedStatic.verify(() -> Game.from(gameIdArgumentCaptor.capture(), setArgumentCaptor.capture()));
         }
     }
 
     @Test
-    void shouldMakeNewlyCreatedGameAsCurrent(){
+    void shouldMakeNewlyCreatedGameAsCurrent() {
 
         Game createdMockGame = Game.from(GameId.from(1), TennisMatchSet.from(SetId.from(1), mockMatch));
-        try(MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)){
+        try (MockedStatic<Game> gameMockedStatic = Mockito.mockStatic(Game.class)) {
             gameMockedStatic.when(() -> Game.from(any(GameId.class), any(TennisMatchSet.class))).thenReturn(createdMockGame);
 
             setUnderTest.startNewGame();

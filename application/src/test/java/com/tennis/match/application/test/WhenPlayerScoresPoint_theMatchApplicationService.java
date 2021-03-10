@@ -27,7 +27,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
     }
 
     @Test
-    void shouldFetchTheMatchFromRepository(){
+    void shouldFetchTheMatchFromRepository() {
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);
@@ -38,7 +38,7 @@ public class WhenPlayerScoresPoint_theMatchApplicationService {
     }
 
     @Test
-    void shouldAskMatchToScorePoint(){
+    void shouldAskMatchToScorePoint() {
 
         MatchId matchId = MatchId.from(1);
         when(mockMatchRepository.matchWith(matchId)).thenReturn(mockMatch);

@@ -27,7 +27,7 @@ public class WhenPresentingScoreOfCurrentGame_theScorecard {
     }
 
     @Test
-    void shouldReflectScoreAsPerPointsScoredByPlayer_(){
+    void shouldReflectScoreAsPerPointsScoredByPlayer_() {
 
         PlayerNumber playerNumber = PlayerNumber.PLAYER_ONE;
         match.currentGame().scorePointFor(playerNumber);
@@ -37,7 +37,6 @@ public class WhenPresentingScoreOfCurrentGame_theScorecard {
         assertThat(match.scoreCard().scoreOForCurrentGameOf(playerNumber)).isEqualTo(FIFTEEN);
         assertThat(match.scoreCard().scoreOForCurrentGameOf(playerNumber.opponent())).isEqualTo(LOVE);
     }
-
 
 
 }

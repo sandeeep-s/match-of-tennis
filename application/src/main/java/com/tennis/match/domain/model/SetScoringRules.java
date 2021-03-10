@@ -4,7 +4,7 @@ import static com.tennis.match.domain.model.PlayerNumber.PLAYER_ONE;
 import static com.tennis.match.domain.model.PlayerNumber.PLAYER_TWO;
 import static com.tennis.match.domain.model.Points.GAME;
 
-public class SetScoringRules{
+public class SetScoringRules {
 
     public boolean hasWonSet(PlayerNumber playerNumber, TennisMatchSet tennisMatchSet) {
 

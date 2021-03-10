@@ -52,7 +52,7 @@ public class Match {
     private PlayerNumber identifyWinner() {
         long setsWonByPlayerOne = sets().stream().filter(tennisMatchSet -> tennisMatchSet.winner() == PLAYER_ONE).count();
         long setsWonByPlayerTwo = sets().stream().filter(tennisMatchSet -> tennisMatchSet.winner() == PLAYER_TWO).count();
-        return setsWonByPlayerOne > setsWonByPlayerTwo ? PLAYER_ONE:PLAYER_TWO;
+        return setsWonByPlayerOne > setsWonByPlayerTwo ? PLAYER_ONE : PLAYER_TWO;
     }
 
     public Game currentGame() {
@@ -110,49 +110,49 @@ public class Match {
     }
 
     private void setMatchId(MatchId matchId) {
-        if (null == matchId){
+        if (null == matchId) {
             throw new IllegalArgumentException("MatchId is required");
         }
         this.matchId = matchId;
     }
 
     private void setPlayerOne(Player playerOne) {
-        if (null == playerOne){
+        if (null == playerOne) {
             throw new IllegalArgumentException("PlayerOne is required");
         }
         this.playerOne = playerOne;
     }
 
     private void setPlayerTwo(Player playerTwo) {
-        if (null == playerTwo){
+        if (null == playerTwo) {
             throw new IllegalArgumentException("PlayerTwo is required");
         }
         this.playerTwo = playerTwo;
     }
 
     private void setSets(List<TennisMatchSet> sets) {
-        if (null == sets){
+        if (null == sets) {
             throw new IllegalArgumentException("Sets are required");
         }
         this.sets = sets;
     }
 
     private void setCurrentSetId(SetId currentSetId) {
-        if (null == currentSetId){
+        if (null == currentSetId) {
             throw new IllegalArgumentException("CurrentSetId is required");
         }
         this.currentSetId = currentSetId;
     }
 
     private void setScoreCard(ScoreCard scoreCard) {
-        if (null == scoreCard){
+        if (null == scoreCard) {
             throw new IllegalArgumentException("ScoreCard is required");
         }
         this.scoreCard = scoreCard;
     }
 
     private void setStatus(MatchStatus status) {
-        if (null == status){
+        if (null == status) {
             throw new IllegalArgumentException("MatchStatus is required");
         }
         this.status = status;

@@ -27,7 +27,7 @@ public enum Points {
             return ADVANTAGE;
         }
     },
-    ADVANTAGE{
+    ADVANTAGE {
         @Override
         public Points nextPoint() {
             return GAME;

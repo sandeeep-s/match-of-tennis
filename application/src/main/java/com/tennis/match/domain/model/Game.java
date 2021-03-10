@@ -29,14 +29,14 @@ public class Game {
         return new Game(gameId, set);
     }
 
-    public static Game from(Game game){
+    public static Game from(Game game) {
         return new Game(game.gameId, game.parentSet, game.scores, game.gameScoringRules);
     }
 
     public void scorePointFor(PlayerNumber playerNumber) {
-        Points newScore  = gameScoringRules.calculateNewScoreOf(playerNumber,this);
+        Points newScore = gameScoringRules.calculateNewScoreOf(playerNumber, this);
         updateScoreOf(playerNumber, newScore);
-        Points newScoreOfOpponent  = gameScoringRules.calculateNewScoreOfOpponent(playerNumber,this);
+        Points newScoreOfOpponent = gameScoringRules.calculateNewScoreOfOpponent(playerNumber, this);
         updateScoreOf(playerNumber.opponent(), newScoreOfOpponent);
         if (gameScoringRules.isDeuce(this)) {
             setGameScoringRules(new DeuceGameScoringRules());
@@ -59,7 +59,7 @@ public class Game {
         return getGameScoringRules();
     }
 
-    public Points scoreOf(PlayerNumber playerNumber){
+    public Points scoreOf(PlayerNumber playerNumber) {
         return getScores().get(playerNumber);
     }
 
@@ -82,28 +82,28 @@ public class Game {
     }
 
     private void setGameId(GameId gameId) {
-        if (null == gameId){
+        if (null == gameId) {
             throw new IllegalArgumentException("GameId is required");
         }
         this.gameId = gameId;
     }
 
     private void setParentSet(TennisMatchSet set) {
-        if (null == set){
+        if (null == set) {
             throw new IllegalArgumentException("Set is required");
         }
         this.parentSet = set;
     }
 
     private void setScores(Map<PlayerNumber, Points> scores) {
-        if (null == scores){
+        if (null == scores) {
             throw new IllegalArgumentException("Scores are required");
         }
         this.scores = scores;
     }
 
     protected void setGameScoringRules(GameScoringRules gameScoringRules) {
-        if (null == gameScoringRules){
+        if (null == gameScoringRules) {
             throw new IllegalArgumentException("GameScoringRules are required");
         }
         this.gameScoringRules = gameScoringRules;

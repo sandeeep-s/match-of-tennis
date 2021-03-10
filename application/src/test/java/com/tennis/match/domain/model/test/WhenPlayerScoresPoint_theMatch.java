@@ -24,7 +24,7 @@ public class WhenPlayerScoresPoint_theMatch {
         openMocks(this);
     }
 
-    private class TestableMatch extends Match{
+    private class TestableMatch extends Match {
 
         public TestableMatch(MatchId matchId, Player playerOne, Player playerTwo, NoOfSets numberOfSets) {
             super(matchId, playerOne, playerTwo, numberOfSets);
@@ -42,7 +42,7 @@ public class WhenPlayerScoresPoint_theMatch {
         MatchId matchId = MatchId.from(1);
         Player sampras = Player.from(PLAYER_ONE, "Sampras");
         Player agassi = Player.from(PLAYER_ONE, "Agassi");
-        matchUnderTest = new TestableMatch(matchId, sampras, agassi, THREE){
+        matchUnderTest = new TestableMatch(matchId, sampras, agassi, THREE) {
             @Override
             public MatchStatus status() {
                 return MatchStatus.IN_PROGRESS;
@@ -60,7 +60,7 @@ public class WhenPlayerScoresPoint_theMatch {
         MatchId matchId = MatchId.from(1);
         Player sampras = Player.from(PLAYER_ONE, "Sampras");
         Player agassi = Player.from(PLAYER_ONE, "Agassi");
-        matchUnderTest = new TestableMatch(matchId, sampras, agassi, THREE){
+        matchUnderTest = new TestableMatch(matchId, sampras, agassi, THREE) {
             @Override
             public MatchStatus status() {
                 return MatchStatus.COMPLETED;
